@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Chyrp v2.1\n"
 "Report-Msgid-Bugs-To: email@chyrp.net\n"
 "POT-Creation-Date: 2011-01-10 22:17+0000\n"
-"PO-Revision-Date: 2011-04-12 04:06+0100\n"
+"PO-Revision-Date: 2011-04-12 13:44+0100\n"
 "Last-Translator: Paul Vorbach <paul@vorb.de>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -28,9 +28,9 @@ msgid "%B %d, %Y"
 msgstr "%d. %B %Y"
 
 #: themes/stardust/content/comment.twig:11
-#, fuzzy, php-format
+#, php-format
 msgid "<strong>%s</strong> on <a href=\"%s\" class=\"permalink\">%s</a>"
-msgstr "<strong>%s</strong> auf <a href=\"%s\" class=\"permalink\">%s</a>"
+msgstr "<strong>%s</strong> um <a href=\"%s\" class=\"permalink\">%s</a>"
 
 #: themes/stardust/content/comment.twig:11
 msgid "%B %d, %Y, at %I:%M %p"
@@ -66,7 +66,7 @@ msgstr "Angetrieben durch <a class=\"chyrp\" href=\"http://chyrp.net/\">Chyrp</a
 
 #: themes/stardust/pages/tags.twig:5
 msgid "Tag Maelstrom"
-msgstr "Tag-Wolke"
+msgstr "Tag-Strudel"
 
 #: themes/stardust/content/comment.twig:10
 msgid "Edit"
@@ -267,7 +267,7 @@ msgstr "%d. %B"
 
 #: themes/stardust/forms/post/edit.twig:49
 msgid "Pinned?"
-msgstr "Angehefted?"
+msgstr "Angeheftet?"
 
 #: themes/stardust/forms/user/login.twig:4
 #: themes/stardust/forms/user/login.twig:15
