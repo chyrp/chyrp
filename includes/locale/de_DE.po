@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Chyrp v2.1\n"
 "Report-Msgid-Bugs-To: email@chyrp.net\n"
 "POT-Creation-Date: 2011-01-10 22:16+0000\n"
-"PO-Revision-Date: 2011-04-12 14:42+0100\n"
+"PO-Revision-Date: 2011-04-12 16:40+0100\n"
 "Last-Translator: Paul Vorbach <paul@vorb.de>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -76,11 +76,11 @@ msgstr ""
 
 #: includes/xmlrpc.php:503
 msgid "Login incorrect."
-msgstr ""
+msgstr "Anmeldung fehlgeschlagen."
 
 #: admin/themes/default/pages/manage_groups.twig:3
 msgid "Manage Groups"
-msgstr ""
+msgstr "Verwalte Gruppen"
 
 #: upgrade.php:1285
 msgid "<strong>Make a backup of your installation.</strong> You never know."
@@ -88,7 +88,7 @@ msgstr ""
 
 #: install.php:120
 msgid "E-Mail address cannot be blank."
-msgstr ""
+msgstr "Die E-Mail-Adresse darf nicht leer sein."
 
 #: admin/themes/default/info.yaml:5
 msgid "The default theme provided with Chyrp, which all themes fallback onto."
@@ -100,7 +100,7 @@ msgstr ""
 
 #: admin/themes/default/pages/user_settings.twig:11
 msgid "Allow people to register"
-msgstr ""
+msgstr "Benutzern erlauben, sich zu registrieren"
 
 #: includes/controller/Admin.php:1929
 msgid "Feather already disabled."
@@ -124,12 +124,12 @@ msgstr ""
 
 #: admin/themes/default/pages/manage_pages.twig:85
 msgid "Reorder"
-msgstr ""
+msgstr "Sortieren"
 
 #: admin/themes/default/pages/modules.twig:7
 #: admin/themes/default/pages/feathers.twig:7
 msgid "Enabled"
-msgstr ""
+msgstr "Aktiviert"
 
 #: admin/themes/default/pages/route_settings.twig:38
 msgid "The plural form of the post's feather"
@@ -247,7 +247,7 @@ msgstr ""
 
 #: includes/controller/Admin.php:2260
 msgid "Routes"
-msgstr ""
+msgstr "Routen"
 
 #: upgrade.php:278
 msgid "Appending to .htaccess file..."
@@ -259,7 +259,7 @@ msgstr ""
 
 #: admin/themes/default/pages/route_settings.twig:32
 msgid "(ex. 30)"
-msgstr ""
+msgstr "(Bsp. 30)"
 
 #: includes/controller/Admin.php:2169
 msgid "Post Slugs"
@@ -274,7 +274,7 @@ msgstr ""
 #: includes/ajax.php:89
 #: admin/themes/default/pages/themes.twig:24
 msgid "Preview"
-msgstr ""
+msgstr "Vorschau"
 
 #: admin/themes/default/pages/route_settings.twig:31
 msgid "Minute submitted"
@@ -286,12 +286,12 @@ msgstr ""
 
 #: admin/themes/default/pages/delete_user.twig:23
 msgid "Posts:"
-msgstr ""
+msgstr "Beiträge:"
 
 #: admin/themes/default/pages/new_user.twig:28
 #: admin/themes/default/pages/edit_user.twig:42
 msgid "Confirm"
-msgstr ""
+msgstr "Bestätigen"
 
 #: includes/xmlrpc.php:238
 #: includes/xmlrpc.php:295
@@ -307,7 +307,7 @@ msgstr ""
 
 #: admin/themes/default/pages/delete_user.twig:50
 msgid "Pages:"
-msgstr ""
+msgstr "Seiten:"
 
 #: upgrade.php:581
 msgid "Creating `sessions` table..."
@@ -315,17 +315,17 @@ msgstr ""
 
 #: admin/themes/default/pages/route_settings.twig:11
 msgid "(recommended)"
-msgstr ""
+msgstr "(empfohlen)"
 
 #: includes/error.php:126
 msgid "Back"
-msgstr ""
+msgstr "Zurück"
 
 #: includes/controller/Admin.php:2376
 #: admin/themes/default/pages/new_user.twig:9
 #: admin/themes/default/pages/edit_user.twig:24
 msgid "Settings"
-msgstr ""
+msgstr "Einstellen"
 
 #: upgrade.php:566
 #, php-format
@@ -743,7 +743,7 @@ msgstr ""
 
 #: includes/controller/Admin.php:2368
 msgid "Manage"
-msgstr ""
+msgstr "Verwalten"
 
 #: includes/controller/Admin.php:424
 msgid "Pages reordered."
@@ -840,7 +840,7 @@ msgstr ""
 #: admin/themes/default/pages/edit_group.twig:29
 #: admin/themes/default/pages/content_settings.twig:62
 msgid "Update"
-msgstr ""
+msgstr "Aktualisieren"
 
 #: upgrade.php:732
 #: upgrade.php:846
@@ -922,7 +922,7 @@ msgstr ""
 #: admin/themes/default/pages/manage_users.twig:38
 #: admin/themes/default/pages/export.twig:40
 msgid "Users"
-msgstr ""
+msgstr "Benutzer"
 
 #: upgrade.php:695
 msgid "Try deleting it manually."
@@ -956,7 +956,7 @@ msgstr ""
 #: install.php:578
 #: admin/themes/default/pages/general_settings.twig:9
 msgid "Site Name"
-msgstr ""
+msgstr "Titel der Website"
 
 #: install.php:258
 msgid "Edit Own Posts"
@@ -965,7 +965,7 @@ msgstr ""
 #: install.php:582
 #: admin/themes/default/pages/general_settings.twig:13
 msgid "Description"
-msgstr ""
+msgstr "Beschreibung"
 
 #: includes/controller/Admin.php:2022
 msgid "You do not have sufficient privileges to preview themes."
@@ -982,7 +982,7 @@ msgstr ""
 #: includes/controller/Admin.php:2266
 #: admin/themes/default/pages/modules.twig:3
 msgid "Modules"
-msgstr ""
+msgstr "Module"
 
 #: includes/class/Paginator.php:149
 msgid "Next &rarr;"
@@ -1008,7 +1008,7 @@ msgstr ""
 
 #: includes/controller/Admin.php:2381
 msgid "Extend"
-msgstr ""
+msgstr "Erweitern"
 
 #: install.php:127
 #: install.php:129
@@ -1020,7 +1020,7 @@ msgstr ""
 
 #: admin/themes/default/layout.twig:32
 msgid "View Site &rsaquo;"
-msgstr ""
+msgstr "Website ansehen &rsaquo;"
 
 #: includes/controller/Admin.php:744
 #, php-format
@@ -1184,7 +1184,7 @@ msgstr ""
 #: admin/themes/default/pages/modules.twig:61
 #: admin/themes/default/pages/feathers.twig:40
 msgid "Enable"
-msgstr ""
+msgstr "Aktivieren"
 
 #: includes/controller/Admin.php:1706
 #: includes/controller/Admin.php:1852
@@ -1261,7 +1261,7 @@ msgstr ""
 
 #: admin/themes/default/pages/user_settings.twig:9
 msgid "Registration"
-msgstr ""
+msgstr "Registrierung"
 
 #: includes/controller/Main.php:403
 msgid "The feather theme file for this post does not exist. The post cannot be displayed."
@@ -1282,7 +1282,7 @@ msgstr ""
 
 #: admin/themes/default/pages/general_settings.twig:44
 msgid "Language"
-msgstr ""
+msgstr "Sprache"
 
 #: includes/controller/Main.php:736
 #: includes/controller/Admin.php:2405
@@ -1292,7 +1292,7 @@ msgstr ""
 
 #: admin/themes/default/pages/content_settings.twig:56
 msgid "Enable Inline Post Management"
-msgstr ""
+msgstr "Direkte Beitragsverwaltung aktivieren"
 
 #: admin/themes/default/pages/modules.twig:70
 msgid "Get More Modules &rsaquo;"
@@ -1311,7 +1311,7 @@ msgstr ""
 
 #: admin/themes/default/pages/content_settings.twig:9
 msgid "Posts Per Page"
-msgstr ""
+msgstr "Beiträge pro Seite"
 
 #: admin/themes/default/pages/delete_user.twig:33
 msgid "Attribute posts to:"
@@ -1428,7 +1428,7 @@ msgstr ""
 
 #: includes/controller/Admin.php:2256
 msgid "Content"
-msgstr ""
+msgstr "Inhalte"
 
 #: admin/themes/default/pages/new_group.twig:10
 #: admin/themes/default/pages/manage_users.twig:42
@@ -1458,7 +1458,7 @@ msgstr ""
 #: includes/controller/Admin.php:2363
 #: admin/themes/default/pages/write_post.twig:3
 msgid "Write"
-msgstr ""
+msgstr "Schreiben"
 
 #: admin/themes/default/pages/route_settings.twig:3
 msgid "Route Settings"
@@ -1495,7 +1495,7 @@ msgstr ""
 
 #: admin/themes/default/pages/content_settings.twig:49
 msgid "Enable XML-RPC Support"
-msgstr ""
+msgstr "Unterstützung von XML-RPC aktivieren"
 
 #: admin/themes/default/pages/import.twig:126
 #: admin/themes/default/pages/import.twig:165
@@ -1562,7 +1562,7 @@ msgstr ""
 
 #: admin/themes/default/pages/content_settings.twig:35
 msgid "Enable Trackbacking"
-msgstr ""
+msgstr "Trackbacking aktivieren"
 
 #: admin/themes/default/pages/new_group.twig:28
 msgid "Add Group"
@@ -1682,11 +1682,11 @@ msgstr ""
 #: admin/themes/default/pages/manage_pages.twig:15
 #: admin/themes/default/pages/manage_groups.twig:17
 msgid "Search &rarr;"
-msgstr ""
+msgstr "Suche &rarr;"
 
 #: admin/themes/default/pages/manage_users.twig:3
 msgid "Manage Users"
-msgstr ""
+msgstr "Benutzer verwalten"
 
 #: upgrade.php:679
 #, php-format
@@ -1713,11 +1713,11 @@ msgstr ""
 
 #: admin/themes/default/partials/post_fields.twig:64
 msgid "Private"
-msgstr ""
+msgstr "Privat"
 
 #: install.php:268
 msgid "Edit Users"
-msgstr ""
+msgstr "Benutzer bearbeiten"
 
 #: upgrade.php:453
 #, php-format
@@ -1726,7 +1726,7 @@ msgstr ""
 
 #: admin/themes/default/pages/content_settings.twig:42
 msgid "Send Pingbacks"
-msgstr ""
+msgstr "Pingbacks senden"
 
 #: admin/themes/default/pages/modules.twig:21
 #: admin/themes/default/pages/modules.twig:52
@@ -1735,7 +1735,7 @@ msgstr ""
 
 #: admin/themes/default/pages/route_settings.twig:31
 msgid "(ex. 59)"
-msgstr ""
+msgstr "(Bsp. 59)"
 
 #: admin/themes/default/pages/route_settings.twig:20
 msgid "(requires clean URLs)"
@@ -1756,11 +1756,11 @@ msgstr ""
 #: includes/error.php:145
 #: includes/controller/Main.php:548
 msgid "Log In"
-msgstr ""
+msgstr "Anmeldung"
 
 #: admin/themes/default/pages/route_settings.twig:25
 msgid "Syntax:"
-msgstr ""
+msgstr "Syntax:"
 
 #: includes/xmlrpc.php:263
 #: includes/xmlrpc.php:283
@@ -1769,7 +1769,7 @@ msgstr ""
 #: includes/xmlrpc.php:438
 #: includes/controller/Admin.php:220
 msgid "Post not found."
-msgstr ""
+msgstr "Beitrag nicht gefunden."
 
 #: includes/controller/Admin.php:358
 #: includes/controller/Admin.php:399
@@ -1786,7 +1786,7 @@ msgstr ""
 #: admin/themes/default/pages/bookmarklet.twig:7
 #: admin/themes/default/pages/bookmarklet.twig:234
 msgid "Chyrp!"
-msgstr ""
+msgstr "Chyrp!"
 
 #: admin/themes/default/pages/general_settings.twig:32
 msgid "Contact E-Mail Address"
@@ -1796,11 +1796,11 @@ msgstr ""
 #: includes/controller/Main.php:493
 #: includes/controller/Admin.php:528
 msgid "Passwords do not match."
-msgstr ""
+msgstr "Die Kennwörter stimmen nicht überein."
 
 #: install.php:264
 msgid "Add Pages"
-msgstr ""
+msgstr "Seiten hinzufügen"
 
 #: upgrade.php:724
 #: upgrade.php:838
@@ -1828,16 +1828,16 @@ msgstr ""
 
 #: admin/themes/default/pages/general_settings.twig:3
 msgid "Site Configuration"
-msgstr ""
+msgstr "Website-Konfiguration"
 
 #: admin/themes/default/pages/manage_pages.twig:26
 msgid "Last Updated"
-msgstr ""
+msgstr "Zuletzt aktualisiert"
 
 #: admin/themes/default/pages/new_user.twig:3
 #: admin/themes/default/pages/new_user.twig:52
 msgid "Add User"
-msgstr ""
+msgstr "Benutzer hinzufügen"
 
 #: includes/controller/Admin.php:185
 msgid "Post created!"
@@ -1854,18 +1854,18 @@ msgstr ""
 
 #: admin/themes/default/pages/delete_group.twig:19
 msgid "Move members to:"
-msgstr ""
+msgstr "Verschiebe Mitglieder nach:"
 
 #: admin/themes/default/pages/manage_users.twig:12
 msgid "New User"
-msgstr ""
+msgstr "Neuer Benutzer"
 
 #: includes/controller/Admin.php:2078
 #: includes/controller/Admin.php:2101
 #: includes/controller/Admin.php:2129
 #: includes/controller/Admin.php:2151
 msgid "Settings updated."
-msgstr ""
+msgstr "Einstellungen aktualisiert."
 
 #: includes/controller/Main.php:602
 msgid "Invalid user specified."
@@ -1873,17 +1873,17 @@ msgstr ""
 
 #: includes/xmlrpc.php:189
 msgid "Failed to write file."
-msgstr ""
+msgstr "Speichern der Datei fehlgeschlagen."
 
 #: admin/themes/default/partials/post_fields.twig:39
 #: admin/themes/default/partials/post_fields.twig:48
 #: admin/themes/default/partials/page_fields.twig:17
 msgid "Save"
-msgstr ""
+msgstr "Speichern"
 
 #: includes/controller/Admin.php:2254
 msgid "General"
-msgstr ""
+msgstr "Allgemein"
 
 #: install.php:71
 msgid "Chyrp is already correctly installed and configured."
@@ -2140,7 +2140,7 @@ msgstr ""
 
 #: admin/themes/default/pages/content_settings.twig:28
 msgid "Uploads Path"
-msgstr ""
+msgstr "Upload-Pfad"
 
 #: admin/themes/default/pages/edit_user.twig:38
 msgid "New Password?"
@@ -2220,11 +2220,12 @@ msgstr ""
 
 #: admin/themes/default/pages/delete_user.twig:19
 msgid "Group:"
-msgstr ""
+msgstr "Gruppe:"
 
 #: admin/themes/default/pages/route_settings.twig:35
+#, fuzzy
 msgid "(ex. this_is_clean)"
-msgstr ""
+msgstr "(Bsp dies_ist_sauber)"
 
 #: admin/themes/default/pages/delete_user.twig:6
 #, php-format
@@ -2243,7 +2244,7 @@ msgstr ""
 #: install.php:586
 #: admin/themes/default/pages/general_settings.twig:36
 msgid "What time is it?"
-msgstr ""
+msgstr "Wie spät ist es?"
 
 #: upgrade.php:1289
 msgid "If any of the upgrade processes fail, you can safely keep refreshing &ndash; it will only attempt to do tasks that are not already successfully completed. If you cannot figure something out, please make a topic (with details!) at the <a href=\"http://chyrp.net/community/\">Chyrp Community</a>."
@@ -2260,12 +2261,12 @@ msgstr ""
 
 #: admin/themes/default/layout.twig:30
 msgid "Log Out &rsaquo;"
-msgstr ""
+msgstr "Abmelden &rsaquo;"
 
 #: admin/themes/default/pages/new_user.twig:34
 #: admin/themes/default/pages/edit_user.twig:12
 msgid "Full Name"
-msgstr ""
+msgstr "Vollständiger Name"
 
 #: upgrade.php:1041
 #, php-format
@@ -2287,11 +2288,11 @@ msgstr ""
 
 #: install.php:262
 msgid "Delete Own Posts"
-msgstr ""
+msgstr "Eigene Beiträge löschen"
 
 #: includes/class/Paginator.php:168
 msgid "&larr; Previous"
-msgstr ""
+msgstr "&larr; Vorherige"
 
 #: admin/themes/default/pages/delete_user.twig:60
 msgid "Attribute pages to:"
@@ -2310,7 +2311,7 @@ msgstr "Gruppen"
 
 #: install.php:250
 msgid "View Site"
-msgstr ""
+msgstr "Website ansehen"
 
 #: admin/themes/default/pages/route_settings.twig:37
 msgid "The post's feather"
@@ -2326,7 +2327,7 @@ msgstr ""
 
 #: install.php:253
 msgid "View Own Drafts"
-msgstr ""
+msgstr "Eigene Entwürfe anzeigen"
 
 #: upgrade.php:503
 msgid "Dropping old groups table..."
@@ -2391,7 +2392,7 @@ msgstr ""
 #: admin/themes/default/pages/themes.twig:21
 #: admin/themes/default/pages/themes.twig:46
 msgid "Current Theme"
-msgstr ""
+msgstr "Momentanes Theme"
 
 #: includes/controller/Admin.php:1422
 msgid "Tumblr content successfully imported!"
@@ -2399,7 +2400,7 @@ msgstr ""
 
 #: includes/controller/Main.php:309
 msgid "Please enter a valid year and month."
-msgstr ""
+msgstr "Bitte geben Sie ein gültiges Jahr und Monat ein."
 
 #: includes/controller/Admin.php:1451
 #: includes/controller/Admin.php:1523
@@ -2409,7 +2410,7 @@ msgstr ""
 #: includes/class/SQL.php:167
 #: includes/class/Query.php:234
 msgid "Database Error"
-msgstr ""
+msgstr "Datenbank-Fehler"
 
 #: admin/themes/default/pages/delete_post.twig:6
 #: admin/themes/default/pages/delete_page.twig:6
@@ -2422,7 +2423,7 @@ msgstr ""
 #: admin/themes/default/pages/export.twig:33
 #: admin/themes/default/pages/export.twig:46
 msgid "filter:"
-msgstr ""
+msgstr "filtern:"
 
 #: upgrade.php:345
 msgid "Adding list_order column to pages table..."
@@ -2446,11 +2447,11 @@ msgstr ""
 #: admin/themes/default/pages/manage_groups.twig:44
 #, php-format
 msgid "Page %d of %d"
-msgstr ""
+msgstr "Seite %d von %d"
 
 #: install.php:255
 msgid "Add Drafts"
-msgstr ""
+msgstr "Entwürfe hinzufügen"
 
 #: upgrade.php:536
 #: upgrade.php:617
@@ -2460,7 +2461,7 @@ msgstr ""
 #: includes/controller/Admin.php:2270
 #: admin/themes/default/pages/themes.twig:3
 msgid "Themes"
-msgstr ""
+msgstr "Themes"
 
 #: includes/controller/Admin.php:2237
 #: admin/themes/default/pages/import.twig:3
@@ -2470,7 +2471,7 @@ msgstr ""
 #: admin/themes/default/pages/import.twig:130
 #: admin/themes/default/pages/import.twig:169
 msgid "Import"
-msgstr ""
+msgstr "Importieren"
 
 #: upgrade.php:753
 #: upgrade.php:759
@@ -2478,7 +2479,7 @@ msgstr ""
 #: upgrade.php:1042
 #, php-format
 msgid "Backup written to %s."
-msgstr ""
+msgstr "Sicherung nach %s geschrieben."
 
 #: admin/themes/default/pages/import.twig:32
 msgid "Usually something like <code>http://example.com/uploads/</code>."
@@ -2541,15 +2542,15 @@ msgstr ""
 
 #: includes/controller/Main.php:557
 msgid "You aren't logged in."
-msgstr ""
+msgstr "Sie sind nicht angemeldet."
 
 #: includes/controller/Main.php:544
 msgid "Logged in."
-msgstr ""
+msgstr "Angemeldet."
 
 #: admin/themes/default/pages/delete_user.twig:44
 msgid "Delete posts."
-msgstr ""
+msgstr "Beiträge löschen."
 
 #: admin/themes/default/pages/export.twig:43
 msgid "(warning: this also exports the hashed passwords, keep it safe)"
@@ -2568,7 +2569,7 @@ msgstr ""
 #: admin/themes/default/pages/import.twig:107
 #: admin/themes/default/pages/import.twig:151
 msgid "Password"
-msgstr ""
+msgstr "Kennwort"
 
 #: upgrade.php:418
 msgid "Renaming /upload directory to /uploads..."
@@ -2577,13 +2578,13 @@ msgstr ""
 #: upgrade.php:955
 #, php-format
 msgid "Restoring group `%s`..."
-msgstr ""
+msgstr "Stelle Gruppe `%s` wieder her..."
 
 #: admin/themes/default/pages/manage_users.twig:17
 #: admin/themes/default/pages/manage_posts.twig:12
 #: admin/themes/default/pages/manage_pages.twig:12
 msgid "Search&hellip;"
-msgstr ""
+msgstr "Suche&hellip;"
 
 #: includes/controller/Admin.php:671
 msgid "You do not have sufficient privileges to manage users."
@@ -2591,9 +2592,9 @@ msgstr ""
 
 #: install.php:609
 msgid "(again)"
-msgstr ""
+msgstr "(wiederholen)"
 
 #: upgrade.php:512
 msgid "Creating new groups table..."
-msgstr ""
+msgstr "Erstelle neue Gruppen-Tabelle..."
 
