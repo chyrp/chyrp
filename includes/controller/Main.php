@@ -246,12 +246,14 @@
                 $posts = new Paginator(Post::find(array("placeholders" => true,
                                                         "where" => array("YEAR(created_at)" => $_GET['year'],
                                                                          "MONTH(created_at)" => $_GET['month'],
-                                                                         "DAY(created_at)" => $_GET['day']))),
+                                                                         "DAY(created_at)" => $_GET['day'],
+                                                                         "status" => "public"))),
                                        $this->post_limit);
             elseif (isset($_GET['year']) and isset($_GET['month']))
                 $posts = new Paginator(Post::find(array("placeholders" => true,
                                                         "where" => array("YEAR(created_at)" => $_GET['year'],
-                                                                         "MONTH(created_at)" => $_GET['month']))),
+                                                                         "MONTH(created_at)" => $_GET['month'],
+                                                                         "status" => "public"))),
                                        $this->post_limit);
 
             $sql = SQL::current();
@@ -261,26 +263,24 @@
                     $timestamps = $sql->select("posts",
                                                array("DISTINCT YEAR(created_at) AS year",
                                                      "MONTH(created_at) AS month",
-                                                     "created_at AS created_at",
-                                                     "id"),
-                                               array("YEAR(created_at)" => $_GET['year']),
-                                               array("created_at DESC", "id DESC"),
+                                                     "created_at AS created_at"),
+                                               array("YEAR(created_at)" => $_GET['year'], "status" => "public"),
+                                               array("created_at DESC"),
                                                array(),
                                                null,
                                                null,
-                                               array("YEAR(created_at)", "MONTH(created_at)", "created_at", "id"));
+                                               array("YEAR(created_at)", "MONTH(created_at)"));
                 else
                     $timestamps = $sql->select("posts",
                                                array("DISTINCT YEAR(created_at) AS year",
                                                      "MONTH(created_at) AS month",
-                                                     "created_at AS created_at",
-                                                     "id"),
-                                               null,
-                                               array("created_at DESC", "id DESC"),
+                                                     "created_at AS created_at"),
+                                               array("status" => "public"),
+                                               array("created_at DESC"),
                                                array(),
                                                null,
                                                null,
-                                               array("YEAR(created_at)", "MONTH(created_at)", "created_at", "id"));
+                                               array("YEAR(created_at)", "MONTH(created_at)"));
 
                 $archives = array();
                 $archive_hierarchy = array();
@@ -289,7 +289,8 @@
                     $month = mktime(0, 0, 0, $time->month + 1, 0, $time->year);
 
                     $posts = Post::find(array("where" => array("YEAR(created_at)" => when("Y", $time->created_at),
-                                                               "MONTH(created_at)" => when("m", $time->created_at))));
+                                                               "MONTH(created_at)" => when("m", $time->created_at),
+                                                               "status" => "public")));
 
                     $archives[$month] = array("posts" => $posts,
                                               "year" => $time->year,
@@ -297,7 +298,7 @@
                                               "timestamp" => $month,
                                               "url" => url("archive/".when("Y/m/", $time->created_at)));
 
-                   $archive_hierarchy[$year][$month] = $posts; 
+                    $archive_hierarchy[$year][$month] = $posts; 
                 }
 
                 $this->display("pages/archive",
@@ -498,17 +499,55 @@
                     Flash::warning(__("Invalid e-mail address."));
 
                 if (!Flash::exists("warning")) {
-                    $user = User::add($_POST['login'], $_POST['password1'], $_POST['email']);
+                    if ($config->email_activation) {
+                        $to      = $_POST['email'];
+                        $subject = $config->name.__("Registration Pending");
+                        $message = "Hello, ".$_POST['login'].". You are receiving this message because you recently registered at ".$config->chyrp_url." To complete your registration, go to ".$config->chyrp_url."?action=validate&email=".$_POST['email'];
+                        $headers = "From:".$config->email."\r\n" .
+                                   "Reply-To:".$config->email. "\r\n" .
+                                   "X-Mailer: PHP/".phpversion() ;
 
-                    Trigger::current()->call("user_registered", $user);
+                        $user = User::add($_POST['login'], $_POST['password1'], $_POST['email']);
 
-                    $_SESSION['user_id'] = $user->id;
+                        $sent = email($to, $subject, $message, $headers);
 
-                    Flash::notice(__("Registration successful."), "/");
+                        if ($sent)
+                            Flash::notice(__("The email address you provided has been sent details to confirm registration."), "/");
+                        else
+                            Flash::notice(__("There was an error emailing the activation link to your email address."), "/");
+                    } else {
+                        $user = User::add($_POST['login'], $_POST['password1'], $_POST['email']);
+
+                        Trigger::current()->call("user_registered", $user);
+
+                        $_SESSION['user_id'] = $user->id;
+
+                        Flash::notice(__("Registration successful."), "/");
+                    }
                 }
             }
 
             $this->display("forms/user/register", array(), __("Register"));
+        }
+
+        /**
+         * Function: validate
+         * Approves a user registration for a given email.
+         */
+        public function validate() {
+            if (logged_in())
+                error(__("Error"), __("You're already logged in."));
+
+            $user = new User(array("email" => $_GET['email']));
+            if ($user->no_results) {
+                Flash::warning(__("A user with that email doesn't seem to exist in the our database."), "/");
+            }
+
+            if (!$user->is_approved == 1) {
+                SQL::current()->query("UPDATE users SET is_approved = 1 WHERE email=".$user->email);
+                Flash::notice(__("Your account is now active. Welcome aboard!"), "/");
+            } else
+                Flash::notice(__("Your account has already been activated."), "/");
         }
 
         /**
