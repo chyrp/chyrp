@@ -59,6 +59,8 @@ ${ trigger.call("admin_head") }
             <div class="clear"></div>
         </div>
         <div class="column" id="footer">
+            {%if update_message == true %}
+            Your Chyrp install is out of date. To upgrade, go <a href="$site.chyrp_url/upgrade.php">here</a>";
             ${ "Chyrp loves you." | translate }<br />
             <span class="sub">
                 ${ "v%s &dash; &copy; %d Chyrp Team" | translate | format(version, 2011) }
