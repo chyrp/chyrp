@@ -2343,6 +2343,7 @@
             $this->context["theme_url"]  = Config::current()->chyrp_url."/admin/themes/".$this->admin_theme;
             $this->context["POST"]       = $_POST;
             $this->context["GET"]        = $_GET;
+            $this->context["update_message"] = update_check();
 
             $this->context["navigation"] = array();
 
