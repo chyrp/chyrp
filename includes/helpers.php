@@ -1631,10 +1631,3 @@
         $cleaned = array_diff(array_unique($trimmed), array(""));
         return $cleaned;
     }
-    function update_check(){
-           $version = file_get_contents("http://api.chyrp.net/v1/chyrp_version.php");
-           if($version > CHYRP_VERSION)
-               return true;
-           else
-               return false;
-    }
