@@ -79,6 +79,9 @@
                             $post,
                             null,
                             $_POST['notify']);
+            Comment::email($_POST['author'],
+                           $_POST['body'],
+                           $post);
         }
 
         static function admin_update_comment() {
