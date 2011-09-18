@@ -197,7 +197,7 @@
             return $new;
         }
 
-        public function update($author, $author_email, $author_url, $body, $status, $timestamp, $update_timestamp = true) {
+        public function update($author, $author_email, $author_url, $body, $status, $timestamp, $update_timestamp = true,$notify) {
             $sql = SQL::current();
             $sql->update("comments",
                          array("id" => $this->id),
@@ -207,7 +207,8 @@
                                "body" => $body,
                                "status" => $status,
                                "created_at" => $timestamp,
-                               "updated_at" => ($update_timestamp) ? datetime() : $this->updated_at));
+                               "updated_at" => ($update_timestamp) ? datetime() : $this->updated_at),
+                               "notify"=>$notify);
 
             Trigger::current()->call("update_comment", $this, $author, $author_email, $author_url, $body, $status, $timestamp, $update_timestamp);
         }
