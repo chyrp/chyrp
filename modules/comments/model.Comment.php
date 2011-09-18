@@ -66,7 +66,7 @@
          *     $post - The <Post> they're commenting on.
          *     $type - The type of comment. Optional, used for trackbacks/pingbacks.
          */
-        static function create($author, $email, $url, $body, $post, $type = null) {
+        static function create($author, $email, $url, $body, $post,$type = null,$notify=1) {
             if (!self::user_can($post->id) and !in_array($type, array("trackback", "pingback")))
                 return;
 
@@ -103,7 +103,8 @@
                               null,
                               null,
                               $post,
-                              $visitor->id);
+                              $visitor->id,
+                              $notify);
                     error(__("Spam Comment"), __("Your comment has been marked as spam. It will have to be approved before it will show up.", "comments"));
                 } else {
                     $comment = self::add($body,
@@ -116,7 +117,8 @@
                                          null,
                                          null,
                                          $post,
-                                         $visitor->id);
+                                         $visitor->id,
+                                         $notify);
 
                     fallback($_SESSION['comments'], array());
                     $_SESSION['comments'][] = $comment->id;
@@ -166,7 +168,7 @@
          *     $post - The <Post> they're commenting on.
          *     $user_id - The ID of this <User> this comment was made by.
          */
-        static function add($body, $author, $url, $email, $ip, $agent, $status, $created_at = null, $updated_at = null, $post, $user_id) {
+        static function add($body, $author, $url, $email, $ip, $agent, $status, $created_at = null, $updated_at = null, $post, $user_id,$notify) {
             if (!empty($url)) # Add the http:// if it isn't there.
                 if (!@parse_url($url, PHP_URL_SCHEME))
                     $url = "http://".$url;
@@ -187,7 +189,8 @@
                                "created_at" => oneof($created_at, datetime()),
                                "updated_at" => oneof($updated_at, "0000-00-00 00:00:00"),
                                "post_id" => $post->id,
-                               "user_id"=> $user_id));
+                               "user_id"=> $user_id,
+                               "notify"=>$notify));
             $new = new self($sql->latest("comments"));
 
             Trigger::current()->call("add_comment", $new);
