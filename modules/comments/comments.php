@@ -21,6 +21,7 @@
                              status VARCHAR(32) default 'denied',
                              post_id INTEGER DEFAULT 0,
                              user_id INTEGER DEFAULT 0,
+                             notify INTEGER DEFAULT 1,
                              created_at DATETIME DEFAULT NULL,
                              updated_at DATETIME DEFAULT NULL
                          ) DEFAULT CHARSET=utf8");
@@ -75,7 +76,9 @@
                             $_POST['email'],
                             $_POST['url'],
                             $_POST['body'],
-                            $post);
+                            $post,
+                            null,
+                            $_POST['notify']);
         }
 
         static function admin_update_comment() {
@@ -94,7 +97,8 @@
                              $_POST['author_url'],
                              $_POST['body'],
                              $status,
-                             $created_at);
+                             $created_at,
+                             $_POST['notify']);
 
             if (isset($_POST['ajax']))
                 exit("{ \"comment_id\": \"".$_POST['id']."\", \"comment_timestamp\": \"".$created_at."\" }");
