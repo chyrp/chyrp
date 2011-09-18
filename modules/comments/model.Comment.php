@@ -291,6 +291,20 @@
             $count = SQL::current()->count("comments", array("user_id" => $user_id));
             return $count;
         }
+        public function email($author,$body,$post){
+            $sql=Sql::Current();
+            $config=Config::current();
+            $post=New Post($post);
+            $emails=$sql->select('__comments', 'author_email', 'notify=1 AND post='.$post);
+            $to = $_POST['email'];
+            $subject = $config->name.__("New Comment");
+            $message = "There is a new comment at ".$post->url()."\n Poster: ".$author."\n Message: ".$body;
+            $headers = "From:".$config->email."\r\n" .
+                                   "Reply-To:".$config->email. "\r\n" .
+                                   "X-Mailer: PHP/".phpversion() ;
+
+            $sent = email($to, $subject, $message, $headers);
+        }
 
         # !! DEPRECATED AFTER 2.0 !!
         public function post() {
