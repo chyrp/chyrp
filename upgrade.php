@@ -469,7 +469,7 @@
      */
     function theme_default_to_stardust() {
         if (Config::get("theme") != "default") return;
-        Config::set("theme", "stardust");
+        Config::set("theme", "firecrest");
     }
 
     /**
@@ -1125,7 +1125,7 @@
     }
 
     /**
-     * Function: add_user_approva_column
+     * Function: add_user_approved_column
      * Adds the @is_approved@ column on the "users" table, and approves all current users.
      *
      * Versions: 2.1 => 2.5
