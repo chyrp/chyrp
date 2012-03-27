@@ -63,3 +63,6 @@ msgstr ""
 msgid "(seconds)"
 msgstr ""
 
+#: modules/cacher/pages/admin/cache_settings.twig:28
+msgid "Clear Cache"
+msgstr ""
