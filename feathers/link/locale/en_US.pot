@@ -37,3 +37,6 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
+#: feathers/link/link.php:6
+msgid "Title"
+msgstr ""
