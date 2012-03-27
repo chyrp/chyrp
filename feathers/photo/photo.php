@@ -4,7 +4,7 @@
             $this->setField(array("attr" => "photo",
                                   "type" => "file",
                                   "label" => __("Photo", "photo"),
-                                  "note" => "<small>(Max. file size: ".ini_get('upload_max_filesize').")</small>"));
+                                  "note" => "<small>(".__("Max. file size: ", "photo").ini_get('upload_max_filesize').")</small>"));
             if (isset($_GET['action']) and $_GET['action'] == "bookmarklet")
                 $this->setField(array("attr" => "from_url",
                                       "type" => "text",
