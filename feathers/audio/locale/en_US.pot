@@ -38,3 +38,6 @@ msgstr ""
 msgid "From URL?"
 msgstr ""
 
+#: feathers/audio/audio.php:7
+msgid "Max. file size: "
+msgstr ""
