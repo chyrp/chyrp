@@ -3,7 +3,7 @@
 {% block title %}${ "Profile" | translate }{% endblock %}
 
 {% block content %}
-                    <h2>Your Profile</h2>
+                    <h2>${ "Profile" | translate }</h2>
                     <p>
                         <img class="gravatar-emblem" src="$visitor.gravatar" alt="Profile Photo" />
                     </p>
@@ -18,7 +18,7 @@
                         <label for="bio">${ "Bio:" | translate } $user.bio</label>
                     </p>
                     <br />
-                    <h2>Contact</h2>
+                    <h2>${ "Contact" | translate }</h2>
                     <p>
                         <label for="email">${ "Email:" | translate } $visitor.email</label><br />
                     </p>
