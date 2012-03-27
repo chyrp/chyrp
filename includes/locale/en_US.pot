@@ -2586,3 +2586,42 @@ msgstr ""
 msgid "Creating new groups table..."
 msgstr ""
 
+#: admin/themes/default/pages/content_settings.twig:59
+msgid "Harness the power of AJAX for inline post/page editing."
+msgstr ""
+
+#: admin/themes/default/pages/content_settings.twig:63
+msgid "Enable WYSIWYG Text Editor"
+msgstr ""
+
+#: admin/themes/default/pages/content_settings.twig:66
+msgid "Provides a basic WYSIWYG text editor for Markdown or Textilize modules, when either of them is enabled."
+msgstr ""
+
+#: admin/themes/default/pages/user_settings.twig:14
+msgid "Activate by email"
+msgstr ""
+
+#: admin/themes/default/pages/user_settings.twig:16
+msgid "Should users activate by email?"
+msgstr ""
+
+#: admin/themes/default/pages/user_settings.twig:19
+msgid "Enable Recaptcha"
+msgstr ""
+
+#: admin/themes/default/pages/user_settings.twig:21
+msgid "Use recaptcha to prevent bots from registering."
+msgstr ""
+
+#: includes/admin.js.php :21
+msgid "(tip: drag the tabs on the <a href=\\\"%s\\\">write</a> page to reorder them)"
+msgstr ""
+
+#: includes/admin.js.php :151
+msgid "Bookmarklet: "
+msgstr ""
+
+#: admin\themes\default\partials\post_fields.twig :68
+msgid "Scheduled"
+msgstr ""
