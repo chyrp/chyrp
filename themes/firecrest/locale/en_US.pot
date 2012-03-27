@@ -516,3 +516,26 @@ msgstr ""
 msgid "Twitter:"
 msgstr ""
 
+#: themes/firecrest/pages/sidebar.twig:73
+msgid "Categories" 
+msgstr ""
+
+#: themes\firecrest\forms\comment\new.twig:30
+msgid "Notify me when others comment on this post"
+msgstr ""
+
+#: themes\firecrest\forms\comment\new.twig:11
+msgid "Speak up!"
+msgstr ""
+
+#: themes\firecrest\content\comment.twig:11
+msgid "Reply"
+msgstr ""
+
+#: themes\firecrest\forms\post\edit.twig: 37
+msgid "Scheduled"
+msgstr ""
+
+#: modules\read_more\read_more.php: 36
+msgid "Read More &raquo;"
+msgstr ""
