@@ -44,7 +44,7 @@
 
         static function settings_nav($navs) {
             if (Visitor::current()->group->can("change_settings"))
-                $navs["like_settings"] = array("title" => __("Like", "like"));
+                $navs["like_settings"] = array("title" => __("Like", "likes"));
 
             return $navs;
         }
