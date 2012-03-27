@@ -45,3 +45,6 @@ msgstr ""
 msgid "From URL?"
 msgstr ""
 
+#: feathers/photo/photo.php:7
+msgid "Max. file size: "
+msgstr ""
