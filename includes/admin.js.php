@@ -148,7 +148,7 @@ var Write = {
     },
     bookmarklet_link: function(){
         // Add the list item
-        $(document.createElement("li")).addClass("bookmarklet right").text("Bookmarklet: ").prependTo(".write_post_nav")
+        $(document.createElement("li")).addClass("bookmarklet right").text("<?php echo __("Bookmarklet: "); ?>").prependTo(".write_post_nav")
 
         // Add the link
         $(document.createElement("a"))
