@@ -227,3 +227,23 @@ msgstr ""
 msgid "Pulls content RSS2/Atom feeds into your Chyrp installation as posts."
 msgstr ""
 
+#: modules/aggregator/pages/admin/new_aggregate.twig:6
+msgid "New Aggregate"
+msgstr ""
+
+#: modules/aggregator/pages/admin/delete_aggregate.twig:3
+msgid "Delete Aggregate &#8220;%s&#8221;?"
+msgstr ""
+
+#: modules/aggregator/pages/admin/delete_aggregate.twig:6
+msgid "Are you sure you want to delete aggregate &#8220;%s&#8221;?"
+msgstr ""
+
+#: modules/aggregator/pages/admin/delete_aggregate.twig:11
+msgid "Source URL:"
+msgstr ""
+
+#: modules/aggregator/pages/admin/delete_aggregate.twig:14
+msgid "Delete posts, too"
+msgstr ""
+
