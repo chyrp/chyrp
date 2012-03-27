@@ -67,7 +67,7 @@
         }
     
         public function manage_posts_column_header() {
-            echo "<th>".__("Category", "category")."</th>";
+            echo "<th>".__("Category", "categorize")."</th>";
         }
     
         public function manage_posts_column($post) {
@@ -80,7 +80,7 @@
             $categories = Category::getCategory();
     
             $fields_list[0]["value"] = "0";
-            $fields_list[0]["name"] = "- None -";
+            $fields_list[0]["name"] = __("- None -", "categorize");
             if (!isset($post->category_id))
                 $fields_list[0]["selected"] = true;
     
