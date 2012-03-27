@@ -24,7 +24,7 @@
                     $download = preg_replace("#\s*.*\[download\](.*?)\[/download\].*\s*#s", '$1', $info);
                     $content.='<div class="extension_manager_item"><h3>'.$name.'</h3>';
                     $content.='<p>'.$description.'<br/>';
-                    $content.='<a href="?action=newextension&url='.$download.'/">Download to Site</a></p></div>';
+                    $content.='<a href="?action=newextension&url='.$download.'/">'.__("Download to Site", "extension_manager").'</a></p></div>';
                 }
                 $context["extensions"]["extensions"] = $content;
                 $themes=file_get_contents('http://api.chyrp.net/v1/chyrp_themes.php');
@@ -39,7 +39,7 @@
                     $download = preg_replace("#\s*.*\[download\](.*?)\[/download\].*\s*#s", '$1', $info);
                     $content.='<div class="extension_manager_item"><h3>'.$name.'</h3>';
                     $content.='<p>'.$description.'<br/>';
-                    $content.='<a href="?action=newtheme&url='.$download.'/">Download to Site</a></p></div>';
+                    $content.='<a href="?action=newtheme&url='.$download.'/">'.__("Download to Site", "extension_manager").'</a></p></div>';
                 }
                 $context["extensions"]["themes"] = $content;
                 $feathers=file_get_contents('http://api.chyrp.net/v1/chyrp_feathers.php');
@@ -54,7 +54,7 @@
                     $download = preg_replace("#\s*.*\[download\](.*?)\[/download\].*\s*#s", '$1', $info);
                     $content.='<div class="extension_manager_item"><h3>'.$name.'</h3>';
                     $content.='<p>'.$description.'<br/>';
-                    $content.='<a href="?action=newfeather&url='.$download.'/">Download to Site</a></p></div>';
+                    $content.='<a href="?action=newfeather&url='.$download.'/">'.__("Download to Site", "extension_manager").'</a></p></div>';
                 }
                 $context["extensions"]["feathers"] = $content;
             }
