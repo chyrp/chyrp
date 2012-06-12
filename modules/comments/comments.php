@@ -738,7 +738,7 @@
                 $atom.= "                <uri>".fix($comment->author_url)."</uri>\r";
                 $atom.= "                <email>".fix($comment->author_email)."</email>\r";
                 $atom.= "                <chyrp:login>".fix(@$comment->user->login)."</chyrp:login>\r";
-                $atom.= "                <chyrp:ip>".long2ip($comment->author_ip)."</chyrp:ip>\r";
+                $atom.= "                <chyrp:ip>".$this->handle_ip($comment->author_ip)."</chyrp:ip>\r";
                 $atom.= "                <chyrp:agent>".fix($comment->author_agent)."</chyrp:agent>\r";
                 $atom.= "            </author>\r";
                 $atom.= "            <content>".fix($comment->body)."</content>\r";
@@ -771,5 +771,11 @@
                 return "(0)";
             else
                 return QueryBuilder::build_list($_SESSION['comments']);
+        }
+
+        public function handle_ip($ip) {
+            if (long2ip(ip2long($ip)) == "0.0.0.0")
+               return long2ip($ip);
+            return $ip;
         }
     }

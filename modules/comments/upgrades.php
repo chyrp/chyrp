@@ -30,6 +30,11 @@
                 test(SQL::current()->query("ALTER TABLE __comments ADD notify INTEGER DEFAULT 0 AFTER parent_id"));
     }
 
+    function update_ip_field() {
+        echo __("Replacing author_id column with a varchar...", "comments").
+        test(SQL::current()->query("ALTER TABLE __comments MODIFY author_ip VARCHAR(128)"));
+    }
+    
     Config::fallback("auto_reload_comments", 30);
     Config::fallback("enable_reload_comments", false);
 
@@ -37,3 +42,4 @@
     remove_defensio_set_akismet();
     add_comment_parent_id_field();
     add_comment_notify_field();
+    update_ip_field();
