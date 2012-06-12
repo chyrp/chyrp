@@ -177,7 +177,7 @@
                 if (!@parse_url($url, PHP_URL_SCHEME))
                     $url = "http://".$url;
 
-            $ip = ip2long($ip);
+            //$ip = ip2long($ip);
             if ($ip === false)
                 $ip = 0;
 

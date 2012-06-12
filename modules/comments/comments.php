@@ -57,6 +57,7 @@
             $config->remove("auto_reload_comments");
             $config->remove("enable_reload_comments");
             $config->remove("allow_nested_comments");
+            $config->remove("ip_converted_to_varchar");
 
             Group::remove_permission("add_comment");
             Group::remove_permission("add_comment_private");
@@ -738,7 +739,7 @@
                 $atom.= "                <uri>".fix($comment->author_url)."</uri>\r";
                 $atom.= "                <email>".fix($comment->author_email)."</email>\r";
                 $atom.= "                <chyrp:login>".fix(@$comment->user->login)."</chyrp:login>\r";
-                $atom.= "                <chyrp:ip>".long2ip($comment->author_ip)."</chyrp:ip>\r";
+                $atom.= "                <chyrp:ip>".$comment->author_ip."</chyrp:ip>\r";
                 $atom.= "                <chyrp:agent>".fix($comment->author_agent)."</chyrp:agent>\r";
                 $atom.= "            </author>\r";
                 $atom.= "            <content>".fix($comment->body)."</content>\r";
