@@ -57,7 +57,6 @@
             $config->remove("auto_reload_comments");
             $config->remove("enable_reload_comments");
             $config->remove("allow_nested_comments");
-            $config->remove("ip_converted_to_varchar");
 
             Group::remove_permission("add_comment");
             Group::remove_permission("add_comment_private");
