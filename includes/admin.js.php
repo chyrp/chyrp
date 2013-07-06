@@ -41,10 +41,6 @@ $(function(){
     })
     <?php endif; ?>
 
-    // Automated PNG fixing.
-    $.ifixpng("<?php echo $config->chyrp_url; ?>/admin/themes/default/images/icons/pixel.gif")
-    $("img[src$='.png']").ifixpng()
-
     // "Help" links should open in popup windows.
     $(".help").live("click", function(){
         window.open($(this).attr("href"), "help", "status=0, scrollbars=1, location=0, menubar=0, "+
@@ -53,23 +49,10 @@ $(function(){
     })
 
     // Auto-expand input fields
-    // $(".expand").expand() <- this statement is destroying dynamic document reflow! What is it intended to achieve?
+    $(".expand").expand()
 
     // Checkbox toggling.
     togglers()
-
-    if ($.browser.safari)
-        $("code, .code").each(function(){
-            $(this).css({
-                fontFamily: "Monaco, monospace",
-                fontSize: "9px"
-            })
-
-            if ($(this).parent().parent().parent().hasClass("split") && $(this).attr("type") == "text") {
-                $(this).css("margin-top", "2px")
-                $(this).parent().css("margin-top", "-2px")
-            }
-        })
 
     if (/(edit|write)_/.test(Route.action))
         Write.init()
@@ -183,14 +166,7 @@ var Write = {
             .appendTo(".bookmarklet")
     },
     auto_expand_fields: function(){
-        // $("input.text").expand() <- this statement is destroying dynamic document reflow! What is it intended to achieve?
-        // $(".redactor_editor").each(function(){
-        //              $(this).css({
-        //                  minHeight: $(this).outerHeight() + 24,
-        //                  lineHeight: "18px",
-        //                  padding: "3px 5px"
-        //              }).autogrow()
-        //          })
+        $("input.text").expand()
     },
     sortable_feathers: function(){
         // Make the Feathers sortable
