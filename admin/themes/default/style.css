@@ -1172,11 +1172,11 @@ br#after_options {
     }
     .enable ul li img,
     .disable ul li img {
-        position: absolute;
+        position: relative;
         width: 2.5em;
         height: 2.5em;
-        top: 1em;
-        right: 1em;
+        top: 0.75em;
+        float: right;
     }
     .enable ul li .description, .disable ul li .description {
         line-height: 1.5;
