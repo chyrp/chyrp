@@ -952,9 +952,6 @@ br#after_options {
 /* @end */
 
 /* @noscript default - display enabled */
-.desktop {
-    display: block !important;
-}
 .mobile {
     display: none !important;
 }
