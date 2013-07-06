@@ -53,7 +53,7 @@ $(function(){
     })
 
     // Auto-expand input fields
-    $(".expand").expand()
+    // $(".expand").expand() <- this statement is destroying dynamic document reflow! What is it intended to achieve?
 
     // Checkbox toggling.
     togglers()
@@ -183,7 +183,7 @@ var Write = {
             .appendTo(".bookmarklet")
     },
     auto_expand_fields: function(){
-        $("input.text").expand()
+        // $("input.text").expand() <- this statement is destroying dynamic document reflow! What is it intended to achieve?
         // $(".redactor_editor").each(function(){
         //              $(this).css({
         //                  minHeight: $(this).outerHeight() + 24,
@@ -496,10 +496,10 @@ var Extend = {
         $("ul.extend").height("auto")
         $("ul.extend").each(function(){
             if ($(".enable ul.extend").height() > $(this).height())
-                $(this).height($(".enable ul.extend").height())
+                $(this).css('min-height', $(".enable ul.extend").height())
 
             if ($(".disable ul.extend").height() > $(this).height())
-                $(this).height($(".disable ul.extend").height())
+                $(this).css('min-height', $(".disable ul.extend").height())
         })
     },
     redraw: function(){
