@@ -466,6 +466,8 @@ input[type="text"],
 input[type="password"],
 input.file,
 textarea {
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
     font-size: 1.25em;
     padding: 3px;
     border: 1px solid #ddd;
@@ -1066,10 +1068,10 @@ br#after_options {
     input[type="password"],
     input.file,
     textarea {
-        margin-left: 0em !important;
-        margin-right: 0em !important;
         -moz-box-sizing: border-box;
         box-sizing: border-box;
+        margin-left: 0em !important;
+        margin-right: 0em !important;
         width: 100% !important;
         font-size: 16px !important;
         padding-top: 0.5em;
@@ -1080,13 +1082,8 @@ br#after_options {
     }
     a.emblem {
         display: inline-block;
-        padding: 0em 1em 0em 0em;
+        padding: 0em 1em 1em 0em;
         position: relative;
-        top: 0.5em;
-    }
-    a.emblem > img {
-        width: 2em;
-        height: 2em;
     }
     div.controls h4 {
         display: block;
