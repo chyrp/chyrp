@@ -1079,6 +1079,7 @@ br#after_options {
     }
     select {
         width: 100%;
+        margin-bottom: 2em;
     }
     a.emblem {
         display: inline-block;
