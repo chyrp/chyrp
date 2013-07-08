@@ -1077,6 +1077,9 @@ br#after_options {
         padding-top: 0.5em;
         padding-bottom: 0.5em;
     }
+    textarea {
+        -webkit-overflow-scrolling: touch;
+    }
     select {
         width: 100%;
         margin-bottom: 2em;
@@ -1191,6 +1194,9 @@ br#after_options {
     }
     .theme {
         margin-right: 0px !important;
+    }
+    .theme img.screenshot {
+        width: 230px;
     }
 
     /* @noscript override - mobile controls visible */
