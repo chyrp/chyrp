@@ -24,6 +24,10 @@
             if ($this->no_results)
                 return false;
 
+            # Strip <script> tags regardless of filter settings
+            $this->body = str_replace("<script", "&lt;script", $this->body);
+            $this->body = str_replace("</script", "&lt;/script", $this->body);
+
             $this->body_unfiltered = $this->body;
             $group = ($this->user_id and !$this->user->no_results) ?
                          $this->user->group :
