@@ -24,10 +24,6 @@
             if ($this->no_results)
                 return false;
 
-            # Strip <script> tags regardless of filter settings
-            $this->body = str_replace("<script", "&lt;script", $this->body);
-            $this->body = str_replace("</script", "&lt;/script", $this->body);
-
             $this->body_unfiltered = $this->body;
             $group = ($this->user_id and !$this->user->no_results) ?
                          $this->user->group :
@@ -177,6 +173,10 @@
          *     $updated_at - The new comment's "last updated" timestamp.
          */
         static function add($body, $author, $url, $email, $ip, $agent, $status, $post, $user_id, $parent, $notify, $created_at = null, $updated_at = null) {
+            # Strip <script> tags
+            $body = str_replace("<script", "&lt;script", $body);
+            $body = str_replace("</script", "&lt;/script", $body);
+
             if (!empty($url)) # Add the http:// if it isn't there.
                 if (!@parse_url($url, PHP_URL_SCHEME))
                     $url = "http://".$url;
@@ -208,6 +208,10 @@
         }
 
         public function update($body, $author, $url, $email, $status, $notify, $timestamp, $update_timestamp = true) {
+            # Strip <script> tags
+            $body = str_replace("<script", "&lt;script", $body);
+            $body = str_replace("</script", "&lt;/script", $body);
+
             $sql = SQL::current();
             $sql->update("comments",
                          array("id" => $this->id),
