@@ -3,7 +3,7 @@
         public function __init() {
             $this->setField(array("attr" => "audio",
                                   "type" => "file",
-                                  "label" => __("MP3 File", "audio"),
+                                  "label" => __("Audio File", "audio"),
                                   "note" => "<small>(Max. file size: ".ini_get('upload_max_filesize').")</small>"));
             if (isset($_GET['action']) and $_GET['action'] == "bookmarklet")
                 $this->setField(array("attr" => "from_url",
