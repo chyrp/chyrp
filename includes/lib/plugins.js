@@ -160,6 +160,19 @@ $.fn.tree = function(options){
   });
 };
 
+// SVG fallback to PNG
+$.fn.fixsvg = function(){
+	$(this).each(function() {
+		var filename = $(this).attr('src');
+		if ( filename.indexOf(".svg") > -1 ) {
+			var fallback = filename.replace("svg","png");
+			$(this).error(function() {
+	    		this.removeAttribute('onerror'); this.src = fallback;
+			})
+    	}
+	})
+}
+
 // Our custom field expander
 $.fn.expand = function(){
   $(this).each(function(){

@@ -48,6 +48,9 @@ $(function(){
         return false
     })
 
+    // SVG fallback for browsers that do not support SVG images
+    $("img").fixsvg()
+
     // Auto-expand input fields
     $(".expand").expand()
 
