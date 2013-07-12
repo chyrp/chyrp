@@ -341,7 +341,7 @@ var Extend = {
         })
     },
     prepare_draggables: function(){
-        $(".enable h2, .disable h2").append(" <span class=\"sub\"><?php echo __("(drag)"); ?></span>")
+        $(".enable h2, .disable h2").append(" <span class=\"sub desktop\"><?php echo __("(drag)"); ?></span>")
 
         $(".disable > ul > li:not(.missing_dependency), .enable > ul > li").draggable({
             zIndex: 100,
