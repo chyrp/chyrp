@@ -14,16 +14,14 @@
                 if ( ChyrpAjaxScroll.auto ) {
                     $(window).on('scroll', window, ChyrpAjaxScroll.watch);
                 } else {
-                    $("#next_page_page").click( ChyrpAjaxScroll.fetch );
+                    $("#next_page_page").click(ChyrpAjaxScroll.fetch);
                 }
             },
             watch: function() {
                 var docViewTop = $(window).scrollTop();
                 var docViewBottom = docViewTop + $(window).height();
-                var docViewed = docViewBottom - $(document).height()
-                if ( docViewed == 0 ) {
-                    ChyrpAjaxScroll.fetch();
-                }
+                var docViewed = docViewBottom - $(document).height();
+                if ( docViewed == 0 ) ChyrpAjaxScroll.fetch();
             },
             fetch: function() {
                 if ( !ChyrpAjaxScroll.busy && !ChyrpAjaxScroll.fail ) {
