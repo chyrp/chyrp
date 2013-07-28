@@ -49,7 +49,7 @@ $(function(){
     })
 
     // Make the Redactor toolbar sticky
-    $(document).stickyToolbar()
+    $('.redactor_box').stickyToolbar()
 
     // SVG fallback for browsers that do not support SVG images
     $("img").fixsvg()
