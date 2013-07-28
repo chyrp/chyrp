@@ -277,7 +277,7 @@ $.fn.stickyToolbar = function() {
 		},
 		trigger: function() {
 			clearTimeout(stickyToolbar.timer);
-			stickyToolbar.timer = setTimeout( stickyToolbar.handler, 250)
+			stickyToolbar.timer = setTimeout( stickyToolbar.handler, 250);
 		}
 	}
 	$(window).scroll(stickyToolbar.trigger);
