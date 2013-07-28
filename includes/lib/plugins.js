@@ -260,6 +260,31 @@ $.fn.loader = function(remove) {
 	}
 }
 
+// Make the Redactor toolbar sticky when the user scrolls beyond it
+$.fn.stickyToolbar = function() {
+	window.RedactorScrollHandler = function() {
+	    var top = $('.redactor_box').offset().top;
+	    var windowLocation = $(window).scrollTop();
+	    if (windowLocation > top) {
+	    	$('.redactor_toolbar').css( 'top', ( windowLocation - top ) + 'px' );
+	    } else {
+	    	$('.redactor_toolbar').css('top', '0px');
+	    }
+	}
+
+	window.RedactorScrollTimer = undefined;
+
+	$(window).scroll( function() {
+		clearTimeout(window.RedactorScrollTimer);
+		window.RedactorScrollTimer = setTimeout( window.RedactorScrollHandler, 250)
+	})
+
+	$(window).resize( function() {
+		clearTimeout(window.RedactorScrollTimer);
+		window.RedactorScrollTimer = setTimeout( window.RedactorScrollHandler, 250)
+	})
+}
+
 // Originally from http://livepipe.net/extra/cookie
 var Cookie = {
   set: function (name, value, days) {
