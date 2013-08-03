@@ -21,7 +21,8 @@
             $this->setFilter("description", array("markup_text", "markup_post_text"));
 
             $this->respondTo("delete_post", "delete_file");
-            $this->respondTo("feed_item", "enclose_audio");
+            $this->respondTo("javascript", "player_js");
+            $this->respondTo("feed_item", "enclose_mp3");
             $this->respondTo("filter_post", "filter_post");
             $this->respondTo("admin_write_post", "swfupload");
             $this->respondTo("admin_edit_post", "swfupload");
@@ -33,7 +34,7 @@
                 isset($_GET['feather']) and $_GET['feather'] != "audio")
                 return;
 
-            Trigger::current()->call("prepare_swfupload", "audio", "*.mp3;*.m4a;*.mp4;*.oga;*.ogg;*.webm");
+            Trigger::current()->call("prepare_swfupload", "audio", "*.mp3");
         }
 
         public function submit() {
@@ -94,6 +95,36 @@
             $post->audio_player = $this->audio_player($post->filename, array(), $post);
         }
 
+        public function player_js() {
+?>//<script>
+var ap_instances = new Array();
+
+function ap_stopAll(playerID) {
+    for(var i = 0;i<ap_instances.length;i++) {
+        try {
+            if(ap_instances[i] != playerID) document.getElementById("audioplayer" + ap_instances[i].toString()).SetVariable("closePlayer", 1);
+            else document.getElementById("audioplayer" + ap_instances[i].toString()).SetVariable("closePlayer", 0);
+        } catch( errorObject ) {
+            // stop any errors
+        }
+    }
+}
+
+function ap_registerPlayers() {
+    var objectID;
+    var objectTags = document.getElementsByTagName("object");
+    for(var i=0;i<objectTags.length;i++) {
+        objectID = objectTags[i].id;
+        if(objectID.indexOf("audioplayer") == 0) {
+            ap_instances[i] = objectID.substring(11, objectID.length);
+        }
+    }
+}
+
+var ap_clearID = setInterval( ap_registerPlayers, 100 );
+<?php
+        }
+
         public function audio_type($filename) {
             $file_split = explode(".", $filename);
             $file_ext = strtolower(end($file_split));
@@ -115,7 +146,7 @@
             }
         }
 
-        public function enclose_audio($post) {
+        public function enclose_mp3($post) {
             $config = Config::current();
             if ($post->feather != "audio" or !file_exists(uploaded($post->filename, false)))
                 return;
@@ -132,19 +163,28 @@
 
             $config = Config::current();
 
-            $player = "\n".'<audio id="audio_with_controls_'.$post->id.'" class="audio_with_controls" controls>';
-            $player.= "\n\t".'<source src="'.$config->chyrp_url.$config->uploads_path.$filename.$vars.'" type="'.$this->audio_type($filename).'" />';
-            $player.= "\n\t".'<a href="'.$config->chyrp_url.$config->uploads_path.$filename.'" class="audio_fallback_link">'.fix($filename).'</a>';
-            $player.= "\n".'</audio>';
+            $player = '<audio id="audio_with_controls" controls>'."\n\t";
+            $player.= '<source src="'.$config->chyrp_url.$config->uploads_path.$filename.$vars.'" type="'.$this->audio_type($filename).'" />'."\n\t";
+            $player.= '<object type="application/x-shockwave-flash" data="'.$config->chyrp_url.'/feathers/audio/lib/player.swf" id="audioplayer'.$post->id.'" height="24" width="290">'."\n\t";
+            $player.= '<param name="movie" value="'.$config->chyrp_url.'/feathers/audio/lib/player.swf" />'."\n\t";
+            $player.= '<param name="FlashVars" value="playerID='.$post->id.'&amp;soundFile='.$config->chyrp_url.$config->uploads_path.$filename.$vars.'" />'."\n\t";
+            $player.= '<param name="quality" value="high" />'."\n\t";
+            $player.= '<param name="menu" value="false" />'."\n\t";
+            $player.= '<param name="wmode" value="transparent" />'."\n";
+            $player.= '</object>'."\n";
+            $player.= '</audio>'."\n";
 
-            $player.= "\n".'<script>';
-            $player.= "\n\t"."if (document.createElement('audio').canPlayType) { ";
-            $player.= "if ( !document.createElement('audio').canPlayType('".$this->audio_type($filename)."') ) { ";
-            $player.= "$('#audio_with_controls_".$post->id."').replaceWith('";
-            $player.= '<a href="'.$config->chyrp_url.$config->uploads_path.$filename.'" class="audio_fallback_link">'.fix($filename).'</a>';
-            $player.= "')";
-            $player.= " } }";
-            $player.= "\n".'</script>'."\n";
+            $player.= '<div id="player_fallback"></div>'."\n\t";
+            $player.= '<script src="http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js" type="text/javascript" charset="utf-8"></script>'."\n\t";
+            $player.= '<script>'."\n\t";
+            $player.= "if (document.createElement('audio').canPlayType) {"."\n\t";
+            $player.= "    if (!document.createElement('audio').canPlayType('".$this->audio_type($filename)."')) {"."\n\t";
+            $player.= '        swfobject.embedSWF("'.$config->chyrp_url.'/feathers/audio/lib/player.swf",
+                               "player_fallback", "290", "24", "9.0.0", "",
+                               {"playerID":"'.$post->id.'&soundFile='.$config->chyrp_url.$config->uploads_path.$filename.$vars.'"});'."\n\t";
+            $player.= "        document.getElementById('audio_with_controls').style.display = 'none'; }"."\n\t";
+            $player.= '}'."\n\t";
+            $player.= '</script>'."\n\t";
 
             return $player;
         }
