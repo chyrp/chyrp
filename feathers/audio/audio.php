@@ -40,9 +40,9 @@
         public function submit() {
             if (!isset($_POST['filename'])) {
                 if (isset($_FILES['audio']) and $_FILES['audio']['error'] == 0)
-                    $filename = upload($_FILES['audio'], array("mp3", "m4a", "mp4", "oga", "ogg", "webm"));
+                    $filename = upload($_FILES['audio'], "mp3");
                 elseif (!empty($_POST['from_url']))
-                    $filename = upload_from_url($_POST['from_url'], array("mp3", "m4a", "mp4", "oga", "ogg", "webm"));
+                    $filename = upload_from_url($_POST['from_url'], "mp3");
                 else
                     error(__("Error"), __("Couldn't upload audio file."));
             } else
@@ -58,10 +58,10 @@
             if (!isset($_POST['filename']))
                 if (isset($_FILES['audio']) and $_FILES['audio']['error'] == 0) {
                     $this->delete_file($post);
-                    $filename = upload($_FILES['audio'], array("mp3", "m4a", "mp4", "oga", "ogg", "webm"));
+                    $filename = upload($_FILES['audio'], "mp3");
                 } elseif (!empty($_POST['from_url'])) {
                     $this->delete_file($post);
-                    $filename = upload_from_url($_POST['from_url'], array("mp3", "m4a", "mp4", "oga", "ogg", "webm"));
+                    $filename = upload_from_url($_POST['from_url'], "mp3");
                 } else
                     $filename = $post->filename;
             else {
@@ -125,27 +125,6 @@ var ap_clearID = setInterval( ap_registerPlayers, 100 );
 <?php
         }
 
-        public function audio_type($filename) {
-            $file_split = explode(".", $filename);
-            $file_ext = strtolower(end($file_split));
-            switch($file_ext) {
-                case "mp3":
-                    return "audio/mpeg";
-                case "m4a":
-                    return "audio/mp4";
-                case "mp4":
-                    return "audio/mp4";
-                case "oga":
-                    return "audio/ogg";
-                case "ogg":
-                    return "audio/ogg";
-                case "webm":
-                    return "audio/webm";
-                default:
-                    return "application/octet-stream";
-            }
-        }
-
         public function enclose_mp3($post) {
             $config = Config::current();
             if ($post->feather != "audio" or !file_exists(uploaded($post->filename, false)))
@@ -153,7 +132,7 @@ var ap_clearID = setInterval( ap_registerPlayers, 100 );
 
             $length = filesize(uploaded($post->filename, false));
 
-            echo '          <link rel="enclosure" href="'.uploaded($post->filename).'" type="'.$this->audio_type($post->filename).'" title="'.truncate(strip_tags($post->description)).'" length="'.$length.'" />'."\n";
+            echo '          <link rel="enclosure" href="'.uploaded($post->filename).'" type="audio/mpeg" title="MP3" length="'.$length.'" />'."\n";
         }
 
         public function audio_player($filename, $params = array(), $post) {
@@ -162,9 +141,9 @@ var ap_clearID = setInterval( ap_registerPlayers, 100 );
                 $vars.= "&amp;".$name."=".$val;
 
             $config = Config::current();
-
             $player = '<audio id="audio_with_controls" controls>'."\n\t";
-            $player.= '<source src="'.$config->chyrp_url.$config->uploads_path.$filename.$vars.'" type="'.$this->audio_type($filename).'" />'."\n\t";
+            $player.= '<source src="'.$config->chyrp_url.$config->uploads_path.$filename.$vars.'" type="audio/mpeg" />'."\n\t";
+
             $player.= '<object type="application/x-shockwave-flash" data="'.$config->chyrp_url.'/feathers/audio/lib/player.swf" id="audioplayer'.$post->id.'" height="24" width="290">'."\n\t";
             $player.= '<param name="movie" value="'.$config->chyrp_url.'/feathers/audio/lib/player.swf" />'."\n\t";
             $player.= '<param name="FlashVars" value="playerID='.$post->id.'&amp;soundFile='.$config->chyrp_url.$config->uploads_path.$filename.$vars.'" />'."\n\t";
@@ -178,7 +157,7 @@ var ap_clearID = setInterval( ap_registerPlayers, 100 );
             $player.= '<script src="http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js" type="text/javascript" charset="utf-8"></script>'."\n\t";
             $player.= '<script>'."\n\t";
             $player.= "if (document.createElement('audio').canPlayType) {"."\n\t";
-            $player.= "    if (!document.createElement('audio').canPlayType('".$this->audio_type($filename)."')) {"."\n\t";
+            $player.= "    if (!document.createElement('audio').canPlayType('audio/mpeg')) {"."\n\t";
             $player.= '        swfobject.embedSWF("'.$config->chyrp_url.'/feathers/audio/lib/player.swf",
                                "player_fallback", "290", "24", "9.0.0", "",
                                {"playerID":"'.$post->id.'&soundFile='.$config->chyrp_url.$config->uploads_path.$filename.$vars.'"});'."\n\t";
