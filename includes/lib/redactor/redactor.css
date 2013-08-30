@@ -250,7 +250,7 @@ body .redactor_box_fullscreen {
 */
 .redactor_toolbar {
 	font-family: Helvetica, Arial, Verdana, Tahoma, sans-serif !important;
-	position: absolute;
+	position: absolute; /* Absolute positioning required for sticky toolbar code */
 	width: 100%;
 	left: 0;
 	top: 0;
