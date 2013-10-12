@@ -1,5 +1,6 @@
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td { margin: 0; padding: 0; }
-table { border-collapse: collapse; border-spacing: 0; }
+table,tr,th,td { border-collapse: collapse; border-spacing: 0; border: 1px solid #ddd;}
+th,td { padding: 3px;}
 fieldset,img { border: 0; }
 address,caption,cite,code,dfn,em,strong,th,var { font-style: normal; font-weight: normal; }
 li { list-style: none; }
@@ -670,7 +671,7 @@ div.post.quote blockquote {
     border: 0;
     color: #45555d;
     font: italic 1.7em/1.25em "Droid Serif", Georgia, serif;
-    margin: -20px 0 10px -20px;
+    margin: 0 0 10px -20px;
     padding: 50px 20px;
     width: 470px;
     text-align: center;
@@ -736,7 +737,12 @@ div.post.chat ul.dialogue li.me .label {
 }
 div.post.photo img {
     max-width: 510px;
-    margin: -20px 0px 20px -20px;
+    margin: 0 0 20px -20px;
+}
+div.post.photo div.subpost h2.title + a:link,
+div.post.photo div.subpost h2.title + a:visited {
+    display: inline-block;
+    border: none;
 }
 div.post a img, div.page a img { border: none; vertical-align: top; }
 div.post img, div.page img { max-width: 100%; }
@@ -747,7 +753,7 @@ div.post.video p {
 }
 div.post.video iframe, div.post.video embed {
     max-width: 510px;
-    margin: -20px 0px 20px -20px;
+    margin: 0 0px 20px -20px;
 }
 
 div.page, div.archive {
