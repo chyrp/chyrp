@@ -613,7 +613,7 @@ div.post .post_meta .info li:last-child {
 .post_meta .tags {
     position: relative;
     overflow: hidden;
-    max-width: 430px;
+    max-width: 365px;
     margin: 15px 0;
     padding: 0px 0px 0px 20px;
     float: left;
