@@ -625,9 +625,9 @@ div.post .post_meta .info li:last-child {
     display: inline-block;
     padding: 3px 6px 4px;
     background: #f4f5f6;
-    -webkit-transition: background .3s;
-    -moz-transition: background .3s;
-    transition: background .3s;
+    -webkit-transition: background .3s, color .3s;
+    -moz-transition: background .3s, color .3s;
+    transition: background .3s, color .3s;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
@@ -635,10 +635,7 @@ div.post .post_meta .info li:last-child {
     font-style: normal;
 }
 .post_meta .tags a:hover {
-    -webkit-transition: background .3s;
-    -moz-transition: background .3s;
     color: #8699a3;
-    border: none;
     background: #E4EBEF;
 }
 .post_meta .author_avatar {
