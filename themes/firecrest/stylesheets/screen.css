@@ -133,6 +133,7 @@ input[type="password"] {
 }
 textarea.wide {
     width: 470px;
+    max-width: 470px;
 }
 input.big {
     font-size: 1.5em;
@@ -978,9 +979,11 @@ button:hover {
 p.lost_pass { margin: 0 0 1em 0; }
 
 span.pages {
-    color: #8699a3;
+    color: #788B96;
     font-weight: bold;
-    padding: 0 0.3em;
+    padding: 4px 8px 5px;
+    background: #D1DCE2;
+    margin: 0 -3px;
 }
 span.who,
 span.waiting {
