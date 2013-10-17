@@ -670,7 +670,7 @@ div.post.quote blockquote {
     border: 0;
     color: #45555d;
     font: italic 1.7em/1.25em "Droid Serif", Georgia, serif;
-    margin: 0 0 10px -20px;
+    margin: -20px 0 10px -20px;
     padding: 50px 20px;
     width: 470px;
     text-align: center;
@@ -736,7 +736,7 @@ div.post.chat ul.dialogue li.me .label {
 }
 div.post.photo img {
     max-width: 510px;
-    margin: 0 0 20px -20px;
+    margin: -20px 0 20px -20px;
 }
 div.post.photo div.subpost h2.title + a:link,
 div.post.photo div.subpost h2.title + a:visited {
@@ -752,7 +752,7 @@ div.post.video p {
 }
 div.post.video iframe, div.post.video embed {
     max-width: 510px;
-    margin: 0 0px 20px -20px;
+    margin: -20px 0px 20px -20px;
 }
 
 div.page, div.archive {
