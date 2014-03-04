@@ -22,10 +22,12 @@
                     foreach($ids as $id) {
                         $info = file_get_contents("http://chyrp.net/api/1/extensions.php?id=$id");
                         $data = json_decode($info, true);
-                        $content[] = array('name' => $data['name'],
+                        if(!empty($data)){
+                            $content[] = array('name' => $data['name'],
                                            'description' => $data['description'],
                                            'version' => $data['version'],
                                            'download' => $data['download']);
+                        }
                     }
                     
                     $context["extensions"]["$type"] = $content;
