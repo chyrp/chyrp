@@ -467,14 +467,14 @@
     }
 
     /**
-     * Function: theme_default_to_stardust
-     * Changes their theme from "default" to "stardust", or leaves it alone if they're not using "default".
+     * Function: theme_default_to_blossom
+     * Changes their theme from "default" to "blossom", or leaves it alone if they're not using "default".
      *
      * Versions: 1.1.3.2 => 2.0
      */
-    function theme_default_to_stardust() {
+    function theme_default_to_blossom() {
         if (Config::get("theme") != "default") return;
-        Config::set("theme", "stardust");
+        Config::set("theme", "blossom");
     }
 
     /**
@@ -1239,6 +1239,7 @@
                 font-size: 3em;
                 margin: 1em 0 .5em;
                 text-align: center;
+                line-height: 1;
             }
             h1.first {
                 margin-top: .25em;
@@ -1323,7 +1324,7 @@
 
         update_protection();
 
-        theme_default_to_stardust();
+        theme_default_to_blossom();
 
         Config::fallback("routes", array());
         Config::fallback("secure_hashkey", md5(random(32, true)));
@@ -1338,7 +1339,6 @@
         Config::fallback("admin_theme", "default");
         Config::fallback("email_activation", true);
         Config::fallback("enable_recaptcha", true);
-        Config::fallback("enable_wysiwyg", true);
         Config::fallback("check_updates", true);
         Config::fallback("enable_emoji", true);
 

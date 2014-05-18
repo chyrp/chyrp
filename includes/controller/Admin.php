@@ -12,10 +12,6 @@
         # Contains the context for various admin pages, to be passed to the Twig templates.
         public $context = array();
 
-        # String: $selected_bookmarklet
-        # Holds the name of the Feather to be selected when they open the bookmarklet.
-        public $selected_bookmarklet;
-
         # String: $base
         # The base path for this controller.
         public $base = "admin";
@@ -109,40 +105,6 @@
         }
 
         /**
-         * Function: bookmarklet
-         * Post writing, from the bookmarklet.
-         */
-        public function bookmarklet() {
-            if (!Visitor::current()->group->can("add_post", "add_draft"))
-                show_403(__("Access Denied"), __("You do not have sufficient privileges to create posts."));
-
-            $config = Config::current();
-
-            if (empty($config->enabled_feathers))
-                error(__("No Feathers"), __("Please install a feather or two in order to add a post."));
-
-            if (!isset($this->selected_bookmarklet))
-                fallback($feather, $config->enabled_feathers[0]);
-            else
-                $feather = $this->selected_bookmarklet;
-
-            fallback($_GET['url']);
-            fallback($_GET['title']);
-            fallback($_GET['selection']);
-
-            $this->display("bookmarklet",
-                           array("done" => isset($_GET['done']),
-                                 "feathers" => Feathers::$instances,
-                                 "selected_feather" => Feathers::$instances[$feather],
-                                 "args" => array("url" => stripslashes($_GET['url']),
-                                                 "page_url" => stripslashes($_GET['url']),
-                                                 "page_link" => '(via <a href="'.stripslashes($_GET['url']).'">'.$_GET['title'].'</a>)',
-                                                 "title" => stripslashes($_GET['title']),
-                                                 "page_title" => stripslashes($_GET['title']),
-                                                 "selection" => stripslashes($_GET['selection']))));
-        }
-
-        /**
          * Function: write
          * Post writing.
          */
@@ -187,10 +149,7 @@
             if (!$post->redirect)
                 $post->redirect = "/admin/?action=write_post";
 
-            if (!isset($_POST['bookmarklet']))
-                Flash::notice(__("Post created!"), $post->redirect);
-            else
-                redirect($post->redirect);
+            redirect($post->redirect);
         }
 
         /**
@@ -1696,9 +1655,17 @@
                 fallback($info["help"]);
 
                 $info["description"] = __($info["description"], $folder);
-                $info["description"] = preg_replace(array("/<code>(.+)<\/code>/s", "/<pre>(.+)<\/pre>/s"),
-                                                    array("'<code>'.fix('\\1').'</code>'", "'<pre>'.fix('\\1').'</pre>'"),
-                                                    $info["description"]);
+
+                $info["description"] = preg_replace_callback("/<code>(.+)<\/code>/s",
+                                                             function ($matches) {
+                                                                 return "<code>".fix($matches[1])."</code>";
+                                                             },
+                                                             $info["description"]);
+                $info["description"] = preg_replace_callback("/<pre>(.+)<\/pre>/s",
+                                                             function ($matches) {
+                                                                 return "<pre>".fix($matches[1])."</pre>";
+                                                             },
+                                                             $info["description"]);
 
                 $info["author"]["link"] = !empty($info["author"]["url"]) ?
                                               '<a href="'.fix($info["author"]["url"]).'">'.fix($info["author"]["name"]).'</a>' :
@@ -1756,8 +1723,17 @@
                 fallback($info["help"]);
 
                 $info["description"] = __($info["description"], $folder);
-                $info["description"] = preg_replace("/<code>(.+)<\/code>/se", "'<code>'.fix('\\1').'</code>'", $info["description"]);
-                $info["description"] = preg_replace("/<pre>(.+)<\/pre>/se", "'<pre>'.fix('\\1').'</pre>'", $info["description"]);
+
+                $info["description"] = preg_replace_callback("/<code>(.+)<\/code>/s",
+                                                             function ($matches) {
+                                                                 return "<code>".fix($matches[1])."</code>";
+                                                             },
+                                                             $info["description"]);
+                $info["description"] = preg_replace_callback("/<pre>(.+)<\/pre>/s",
+                                                             function ($matches) {
+                                                                 return "<pre>".fix($matches[1])."</pre>";
+                                                             },
+                                                             $info["description"]);
 
                 $info["author"]["link"] = !empty($info["author"]["url"]) ?
                                               '<a href="'.fix($info["author"]["url"]).'">'.fix($info["author"]["name"]).'</a>' :
@@ -1810,13 +1786,17 @@
                 $info["author"]["link"] = !empty($info["author"]["url"]) ?
                     '<a href="'.$info["author"]["url"].'">'.$info["author"]["name"].'</a>' :
                     $info["author"]["name"] ;
-                $info["description"] = preg_replace("/<code>(.+)<\/code>/se",
-                                                    "'<code>'.fix('\\1').'</code>'",
-                                                    $info["description"]);
 
-                $info["description"] = preg_replace("/<pre>(.+)<\/pre>/se",
-                                                    "'<pre>'.fix('\\1').'</pre>'",
-                                                    $info["description"]);
+                $info["description"] = preg_replace_callback("/<code>(.+)<\/code>/s",
+                                                             function ($matches) {
+                                                                 return "<code>".fix($matches[1])."</code>";
+                                                             },
+                                                             $info["description"]);
+                $info["description"] = preg_replace_callback("/<pre>(.+)<\/pre>/s",
+                                                             function ($matches) {
+                                                                 return "<pre>".fix($matches[1])."</pre>";
+                                                             },
+                                                             $info["description"]);
 
                 $this->context["themes"][] = array("name" => $folder,
                                                    "screenshot" => (file_exists(THEMES_DIR."/".$folder."/screenshot.png") ?
@@ -2135,7 +2115,6 @@
                          $config->set("send_pingbacks", !empty($_POST['send_pingbacks'])),
                          $config->set("enable_xmlrpc", !empty($_POST['enable_xmlrpc'])),
                          $config->set("enable_ajax", !empty($_POST['enable_ajax'])),
-                         $config->set("enable_wysiwyg", !empty($_POST['enable_wysiwyg'])),
                          $config->set("enable_emoji", !empty($_POST['enable_emoji'])));
 
             if (!in_array(false, $set))
