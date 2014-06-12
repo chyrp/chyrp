@@ -73,6 +73,24 @@
                             ${ "Use Unicode Emoticons." | translate }
                         </small>
                     </p>
+                    <p>
+                        <label for="default_post_status">${ "Default Post Status" | translate }</label>
+                        <select name="default_post_status" id="default_post_status">
+                            <option value="draft"${ site.default_post_status | option_selected("draft") }>${ "Draft" | translate }</option>
+                            <option value="public"${ site.default_post_status | option_selected("public") }>${ "Public" | translate }</option>
+                            <option value="private"${ site.default_post_status | option_selected("private") }>${ "Private" | translate }</option>
+                            <option value="scheduled"${ site.default_post_status | option_selected("scheduled") }>${ "Scheduled" | translate }</option>
+                            <option value="registered_only"${ site.default_post_status | option_selected("registered_only") }>${ "Registered Only" | translate }</option>
+                            {% if groups %}
+                                <optgroup label="${ "Group" | translate }">
+                                {% for group in groups %}
+                                    <option value="{$group.id}"${ site.default_post_status | option_selected("{"~ group.id ~"}") }>${ group.name | escape }</option>
+                                {% endfor %}
+                                </optgroup>
+                            {% endif %}
+                        </select>
+
+                    </p>
                     <p class="buttons">
                         <button type="submit" class="yay">
                             <img src="$theme_url/images/icons/success.svg" alt="success" />${ "Update" | translate }

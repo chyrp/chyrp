@@ -159,11 +159,15 @@
 
             fallback($_GET['feather'], reset($config->enabled_feathers));
 
+            $post = new stdClass();
+            $post->status = $config->default_post_status;
+
             $this->display("write_post",
                            array("groups" => Group::find(array("order" => "id ASC")),
                                  "options" => $options,
                                  "feathers" => Feathers::$instances,
-                                 "feather" => Feathers::$instances[$_GET['feather']]));
+                                 "feather" => Feathers::$instances[$_GET['feather']],
+                                 "post" => $post));
         }
 
         /**
@@ -2121,7 +2125,7 @@
                 show_403(__("Access Denied"), __("You do not have sufficient privileges to change settings."));
 
             if (empty($_POST))
-                return $this->display("content_settings");
+                return $this->display("content_settings", array("groups" => Group::find(array("order" => "id ASC"))));
 
             if (!isset($_POST['hash']) or $_POST['hash'] != Config::current()->secure_hashkey)
                 show_403(__("Access Denied"), __("Invalid security key."));
@@ -2136,7 +2140,8 @@
                          $config->set("enable_xmlrpc", !empty($_POST['enable_xmlrpc'])),
                          $config->set("enable_ajax", !empty($_POST['enable_ajax'])),
                          $config->set("enable_wysiwyg", !empty($_POST['enable_wysiwyg'])),
-                         $config->set("enable_emoji", !empty($_POST['enable_emoji'])));
+                         $config->set("enable_emoji", !empty($_POST['enable_emoji'])),
+                         $config->set("default_post_status", $_POST['default_post_status']));
 
             if (!in_array(false, $set))
                 Flash::notice(__("Settings updated."), "/admin/?action=content_settings");
