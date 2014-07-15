@@ -1871,6 +1871,7 @@
 				if(this.css.jq.volumeMax.length) {
 					this.css.jq.volumeMax.hide();
 				}
+				$('.jp-progress, .jp-time-holder').css('right', '25px');
 			} else {
 				if(this.css.jq.volumeBar.length) {
 					this.css.jq.volumeBar.show();
