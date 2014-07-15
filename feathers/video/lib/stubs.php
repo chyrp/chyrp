@@ -46,6 +46,16 @@ $AutoEmbed_stubs = array(
     'iframe-player' => 'http://www.youtube.com/embed/$2',
   ),
   array(
+    'title' => 'YouTube (Secure)',
+    'website' => 'https://www.youtube.com',
+    'url-match' => 'https://(?:video\.google\.(?:com|com\.au|co\.uk|de|es|fr|it|nl|pl|ca|cn)/(?:[^"]*?))?(?:(?:www|au|br|ca|es|fr|de|hk|ie|in|il|it|jp|kr|mx|nl|nz|pl|ru|tw|uk)\.)?youtube\.com(?:[^"]*?)?(?:&|&amp;|/|\?|;|\%3F|\%2F)(?:video_id=|v(?:/|=|\%3D|\%2F))([0-9a-z-_]{11})',
+    'embed-src' => 'https://www.youtube.com/v/$2&rel=0&fs=1&hd=1',
+    'embed-width' => '480',
+    'embed-height' => '295',
+    'image-src' => 'https://img.youtube.com/vi/$2/0.jpg',
+    'iframe-player' => 'https://www.youtube.com/embed/$2',
+  ),
+  array(
     'title' => 'YouTube (Playlists)',
     'website' => 'http://www.youtube.com',
     'url-match' => 'http://(?:(?:www|au|br|ca|es|fr|de|hk|ie|in|il|it|jp|kr|mx|nl|nz|pl|ru|tw|uk)\.)?youtube\.com(?:[^"]*?)?(?:&|&amp;|/|\?|;)(?:id=|p=|p/)([0-9a-f]{16})',
@@ -1115,7 +1125,7 @@ $AutoEmbed_stubs = array(
     'embed-height' => '433',
   ),
   array(
-    'title' => 'TagTélé',
+    'title' => 'TagTé¬©',
     'website' => 'http://www.tagtele.com',
     'url-match' => 'http://www\.tagtele\.com/(?:v/|videos/voir/)([0-9]{1,12})',
     'embed-src' => 'http://www.tagtele.com/v/$2',
