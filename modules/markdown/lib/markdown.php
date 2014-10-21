@@ -568,8 +568,10 @@ class Markdown_Parser {
 			$tag = "pre";
 		}
 		
-		# Replace the tag with the prefixes
-		$text = str_replace("<". $tag . ">","<" . $tag . " class='".MARKDOWN_CODE_CLASS_PREFIX."'>",$text);
+		# Replace the tag with the prefix if the prefix has been set
+		if (!empty(MARKDOWN_CODE_CLASS_PREFIX)) {
+			$text = str_replace("<". $tag . ">","<" . $tag . " class='".MARKDOWN_CODE_CLASS_PREFIX."'>",$text);
+		}
 		
 		# Then hash the block.
 		static $i = 0;
@@ -1164,7 +1166,7 @@ class Markdown_Parser {
 		$code = htmlspecialchars(trim($code), ENT_NOQUOTES);
 		
 		# Check if a code span prefix has been set
-		if (MARKDOWN_CODE_SPAN_PREFIX == "")
+		if (!empty(MARKDOWN_CODE_SPAN_PREFIX))
 			return $this->hashPart("<code>$code</code>");
 			
 		# Return the code span including the prefix
