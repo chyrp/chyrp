@@ -16,16 +16,28 @@
 
     # Constant: CHYRP_VERSION
     # Chyrp's version number.
-    define('CHYRP_VERSION', "2.5");
+    const CHYRP_VERSION = '3.0-alpha';
 
     # Constant: DEBUG
     # Should Chyrp use debugging processes?
-    define('DEBUG', true);
+    const DEBUG = true;
 
     # Constant: CACHE_TWIG
     # If defined, this will take priority over DEBUG and toggle Twig template caching.
     # Do not enable this during theme development.
-    define('CACHE_TWIG', true);
+    const CACHE_TWIG = false;
+
+    # Constant: UPGRADING
+    # Is the user running the upgrader? (false)
+    const UPGRADING = false;
+
+    # Constant: INSTALLING
+    # Is the user running the installer? (false)
+    const INSTALLING = false;
+
+    # Constant: TESTER
+    # Is the site being run by the automated tester?
+    define('TESTER', isset($_SERVER['HTTP_USER_AGENT']) and $_SERVER['HTTP_USER_AGENT'] == "tester.rb");
 
     # Constant: JAVASCRIPT
     # Is this the JavaScript file?
@@ -46,18 +58,6 @@
     # Constant: TRACKBACK
     # Is this being run from a trackback request?
     if (!defined('TRACKBACK')) define('TRACKBACK', false);
-
-    # Constant: UPGRADING
-    # Is the user running the upgrader? (false)
-    define('UPGRADING', false);
-
-    # Constant: INSTALLING
-    # Is the user running the installer? (false)
-    define('INSTALLING', false);
-
-    # Constant: TESTER
-    # Is the site being run by the automated tester?
-    define('TESTER', isset($_SERVER['HTTP_USER_AGENT']) and $_SERVER['HTTP_USER_AGENT'] == "tester.rb");
 
     # Constant: INDEX
     # Is the requested file /index.php?
@@ -286,6 +286,10 @@
     # Constant: THEME_URL
     # URL to /themes/(current/previewed theme)
     define('THEME_URL', $config->chyrp_url."/themes/".(PREVIEWING ? $_SESSION['theme'] : $config->theme));
+
+    # Constant: ASSETS_DIR
+    # Absolute path to /assets
+    define('ASSETS_DIR', THEME_DIR."/assets");
 
     # Initialize the theme.
     $theme = Theme::current();

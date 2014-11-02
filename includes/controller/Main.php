@@ -36,16 +36,16 @@
             $this->feed = (isset($_GET['feed']) or (isset($_GET['action']) and $_GET['action'] == "feed"));
             $this->post_limit = Config::current()->posts_per_page;
 
-            $cache = (is_writable(INCLUDES_DIR."/caches") and
-                      !DEBUG and
-                      !PREVIEWING and
-                      !defined('CACHE_TWIG') or CACHE_TWIG);
+            $cache = (is_writable(INCLUDES_DIR."/caches") && !DEBUG && !PREVIEWING &&
+                !defined('CACHE_TWIG') || CACHE_TWIG);
 
-            if (defined('THEME_DIR'))
-                $this->twig = new Twig_Loader(THEME_DIR,
-                                              $cache ?
-                                                  INCLUDES_DIR."/caches" :
-                                                  null) ;
+            $loader = new Twig_Loader_Filesystem(THEME_DIR);
+            $twig_options =  array('cache' => $cache ? INCLUDES_DIR."/caches" : false,
+                                   'debug' => true, 'autoescape' => false);
+
+            $this->twig = new Twig_Environment($loader, $twig_options);
+            $this->twig->addExtension(new Chyrp_Twig_Extension());
+            $this->twig->addExtension(new Twig_Extension_Debug());
         }
 
         /**
@@ -300,7 +300,7 @@
                                               "timestamp" => $month,
                                               "url" => url("archive/".when("Y/m/", $time->created_at)));
 
-                    $archive_hierarchy[$year][$month] = $posts; 
+                    $archive_hierarchy[$year][$month] = $posts;
                 }
 
                 $this->display("pages/archive",
@@ -850,16 +850,19 @@
 
             $trigger->filter($this->context, array("main_context", "main_context_".str_replace("/", "_", $file)));
 
-            $file = ($file[0] == "/" or preg_match("/[a-zA-Z]:\\\/", $file)) ? $file : THEME_DIR."/".$file ;
-            if (!file_exists($file.".twig"))
-                error(__("Template Missing"), _f("Couldn't load template: <code>%s</code>", array($file.".twig")));
+            $file = ($file[0] == "/" or preg_match("/[a-zA-Z]:\\\/", $file)) ?: $file;
+
+            if (!$theme->file_exists($file)) {
+                error(__("Template Missing"),
+                      _f("Couldn't load template: <code>%s</code>", array($file.".twig")));
+            }
 
             try {
-                return $this->twig->getTemplate($file.".twig")->display($this->context);
+                return $this->twig->display($file.".twig", $this->context);
             } catch (Exception $e) {
                 $prettify = preg_replace("/([^:]+): (.+)/", "\\1: <code>\\2</code>", $e->getMessage());
                 $trace = debug_backtrace();
-                $twig = array("file" => $e->filename, "line" => $e->lineno);
+                $twig = array("file" => $e->getTemplateFile(), "line" => $e->getTemplateLine());
                 array_unshift($trace, $twig);
                 error(__("Error"), $prettify, $trace);
             }

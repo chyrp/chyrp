@@ -41,15 +41,11 @@
      * :license: BSD.
      */
 
-
     if (!defined('TWIG_BASE'))
         define('TWIG_BASE', dirname(__FILE__) . '/Twig');
 
-    define('TWIG_VERSION', '0.1-dev');
+    # load automatically on initialization.
+    require TWIG_BASE . '/Autoloader.php';
+    Twig_Autoloader::register();
 
-
-    // the systems we load automatically on initialization.  The compiler
-    // and other stuff is loaded on first request.
-    require TWIG_BASE . '/exceptions.php';
-    require TWIG_BASE . '/runtime.php';
-    require TWIG_BASE . '/api.php';
+    require_once "TwigExtensions/Chyrp_Twig_Extension.php";

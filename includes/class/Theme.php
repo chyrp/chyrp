@@ -1,9 +1,11 @@
 <?php
+
     /**
      * Class: Theme
      * Various helper functions for the theming engine.
      */
-    class Theme {
+    class Theme
+    {
         # String: $title
         # The title for the current page.
         public $title = "";
@@ -202,8 +204,8 @@
          */
         public function stylesheets() {
             $config = Config::current();
-
             $stylesheets = array();
+
             Trigger::current()->filter($stylesheets, "stylesheets");
 
             if (!empty($stylesheets))
@@ -213,16 +215,17 @@
             else
                 $stylesheets = "";
 
-            if (file_exists(THEME_DIR."/style.css"))
+            if (file_exists(ASSETS_DIR."/css/style.css"))
                 $stylesheets = '<link rel="stylesheet" href="'.THEME_URL.'/style.css" type="text/css" media="screen" charset="utf-8" />'."\n\t";
 
-            if (!file_exists(THEME_DIR."/stylesheets/") and !file_exists(THEME_DIR."/css/"))
+            if (!file_exists(ASSETS_DIR."/stylesheets/") and !file_exists(ASSETS_DIR."/css/"))
                 return $stylesheets;
 
-            $long  = (array) glob(THEME_DIR."/stylesheets/*");
-            $short = (array) glob(THEME_DIR."/css/*");
+            $long  = (array) glob(ASSETS_DIR."/stylesheets/*");
+            $medium  = (array) glob(ASSETS_DIR."/styles/*");
+            $short = (array) glob(ASSETS_DIR."/css/*");
 
-            $total = array_merge($long, $short);
+            $total = array_merge($long, $medium, $short);
             foreach($total as $file) {
                 $path = preg_replace("/(.+)\/themes\/(.+)/", "/themes/\\2", $file);
                 $file = basename($file);
@@ -270,17 +273,20 @@
                            implode('" type="text/javascript" charset="utf-8"></script>'."\n\t".'<script src="', $javascripts).
                            '" type="text/javascript" charset="utf-8"></script>';
 
-            if (file_exists(THEME_DIR."/javascripts/") or file_exists(THEME_DIR."/js/")) {
-                $long  = (array) glob(THEME_DIR."/javascripts/*.js");
-                $short = (array) glob(THEME_DIR."/js/*.js");
+            if (file_exists(ASSETS_DIR."/javascripts/") or file_exists(ASSETS_DIR."/js/")) {
+                $long  = (array) glob(ASSETS_DIR."/javascripts/*.js");
+                $medium= (array) glob(ASSETS_DIR."/scripts/*.js");
+                $short = (array) glob(ASSETS_DIR."/js/*.js");
 
-                foreach(array_merge($long, $short) as $file)
+                foreach(array_merge($long, $medium, $short) as $file)
                     if ($file and !substr_count($file, ".inc.js"))
                         $javascripts.= "\n\t".'<script src="'.$config->chyrp_url.'/includes/lib/gz.php?file='.preg_replace("/(.+)\/themes\/(.+)/", "/themes/\\2", $file).'" type="text/javascript" charset="utf-8"></script>';
 
-                $long  = (array) glob(THEME_DIR."/javascripts/*.php");
-                $short = (array) glob(THEME_DIR."/js/*.php");
-                foreach(array_merge($long, $short) as $file)
+                $long  = (array) glob(ASSETS_DIR."/javascripts/*.php");
+                $medium= (array) glob(ASSETS_DIR."/scripts/*.php");
+                $short = (array) glob(ASSETS_DIR."/js/*.php");
+
+                foreach(array_merge($long, $medium, $short) as $file)
                     if ($file)
                         $javascripts.= "\n\t".'<script src="'.$config->chyrp_url.preg_replace("/(.+)\/themes\/(.+)/", "/themes/\\2", $file).'" type="text/javascript" charset="utf-8"></script>';
             }

@@ -31,15 +31,20 @@
         private function __construct() {
             $this->admin_theme = fallback(Config::current()->admin_theme, "default");
 
-            $this->theme = new Twig_Loader(MAIN_DIR."/admin/themes/".$this->admin_theme,
-                                            (is_writable(INCLUDES_DIR."/caches") and !DEBUG) ?
-                                                INCLUDES_DIR."/caches" :
-                                                null);
+            $cache = (is_writable(INCLUDES_DIR."/caches") && !DEBUG && !PREVIEWING &&
+                !defined('CACHE_TWIG') || CACHE_TWIG);
 
-            $this->default = new Twig_Loader(MAIN_DIR."/admin/themes/default",
-                                            (is_writable(INCLUDES_DIR."/caches") and !DEBUG) ?
-                                                INCLUDES_DIR."/caches" :
-                                                null);
+            require_once INCLUDES_DIR."/class/TwigExtensions/Chyrp_Twig_Extension.php";
+
+            $templateDir = ADMIN_THEMES_DIR.'/'.$this->admin_theme;
+            $loader = new Twig_Loader_Filesystem($templateDir);
+
+            $twig_options =  array('cache' => $cache ? INCLUDES_DIR.'/caches' : false,
+                                   'debug' => true, 'autoescape' => false);
+
+            $this->twig = new Twig_Environment($loader, $twig_options);
+            $this->twig->addExtension(new Chyrp_Twig_Extension());
+            $this->twig->addExtension(new Twig_Extension_Debug());
         }
 
         /**
@@ -159,7 +164,7 @@
 
             fallback($_GET['feather'], reset($config->enabled_feathers));
 
-            $this->display("write_post",
+            $this->display("pages/write_post",
                            array("groups" => Group::find(array("order" => "id ASC")),
                                  "options" => $options,
                                  "feathers" => Feathers::$instances,
@@ -349,7 +354,7 @@
             if (!Visitor::current()->group->can("add_page"))
                 show_403(__("Access Denied"), __("You do not have sufficient privileges to create pages."));
 
-            $this->display("write_page", array("pages" => Page::find()));
+            $this->display("pages/write_page", array("pages" => Page::find()));
         }
 
         /**
@@ -1284,7 +1289,7 @@
                         $contentencoded = str_replace($matched_url, $config->url.$config->uploads_path.$filename, $contentencoded);
                     }
                 }
-                
+
                 $clean = (isset($wordpress->post_name) && $wordpress->post_name != '') ? $wordpress->post_name : sanitize($item->title) ;
 
                 $pinned = (isset($wordpress->is_sticky)) ? $wordpress->is_sticky : 0 ;
@@ -1307,7 +1312,7 @@
                                              ),
                                 "feather" => "text"
                             );
-                    
+
                     $wp_post_format = null;
                     if (isset($item->category)) {
                         foreach ($item->category as $category) {
@@ -1321,7 +1326,7 @@
                             }
                         }
                     }
-                    
+
                     if ($wp_post_format) {
                         $trigger->filter(
                             $data,
@@ -1329,7 +1334,7 @@
                             $item
                          );
                     }
-                    
+
                     $post = Post::add($data["content"],
                                       $clean,
                                       Post::check_url($clean),
@@ -2335,22 +2340,27 @@
             $pages["write"] = array_merge(array("write_post"), array_keys($subnav["write"]));;
 
             # Manage navs
-            $subnav["manage"] = array("manage_posts"  => array("title" => __("Posts"),
-                                                               "show" => (Post::any_editable() or Post::any_deletable()),
-                                                               "selected" => array("edit_post", "delete_post")),
-                                      "manage_pages"  => array("title" => __("Pages"),
-                                                               "show" => ($visitor->group->can("edit_page", "delete_page")),
-                                                               "selected" => array("edit_page", "delete_page")),
-                                      "manage_users"  => array("title" => __("Users"),
-                                                               "show" => ($visitor->group->can("add_user",
-                                                                                               "edit_user",
-                                                                                               "delete_user")),
-                                                               "selected" => array("edit_user", "delete_user", "new_user")),
-                                      "manage_groups" => array("title" => __("Groups"),
-                                                               "show" => ($visitor->group->can("add_group",
-                                                                                               "edit_group",
-                                                                                               "delete_group")),
-                                                               "selected" => array("edit_group", "delete_group", "new_group")));
+            $subnav["manage"] = array(
+                "manage_posts"  => array("title" => __("Posts"),
+                                         "show" => (Post::any_editable() or Post::any_deletable()),
+                                         "selected" => array("edit_post", "delete_post")),
+                "manage_pages"  => array("title" => __("Pages"),
+                                         "show" => ($visitor->group->can("edit_page",
+                                                                         "delete_page")),
+                                         "selected" => array("edit_page", "delete_page")),
+                "manage_users"  => array("title" => __("Users"),
+                                         "show" => ($visitor->group->can("add_user",
+                                                                         "edit_user",
+                                                                         "delete_user")),
+                                        "selected" => array("edit_user",
+                                                            "delete_user", "new_user")),
+                "manage_groups" => array("title" => __("Groups"),
+                                         "show" => ($visitor->group->can("add_group",
+                                                                         "edit_group",
+                                                                         "delete_group")),
+                                         "selected" => array("edit_group",
+                                                             "delete_group", "new_group")));
+
             $trigger->filter($subnav["manage"], "manage_nav");
 
             $subnav["manage"]["import"] = array("title" => __("Import"),
@@ -2421,7 +2431,6 @@
             $this->context = array_merge($context, $this->context);
 
             $trigger = Trigger::current();
-
             $trigger->filter($this->context, array("admin_context", "admin_context_".str_replace("/", "_", $action)));
 
             # Are there any extension-added pages?
@@ -2483,28 +2492,22 @@
                 $trigger->filter($arr, $name."_nav_show");
 
             $this->context["navigation"]["write"] = array("title" => __("Write"),
-                                                          "show" => in_array(true, $show["write"]),
-                                                          "selected" => (in_array($action, $write) or
-                                                                        match("/^write_/", $action)));
+                "show" => in_array(true, $show["write"]),
+                "selected" => (in_array($action, $write) or match("/^write_/", $action)));
 
             $this->context["navigation"]["manage"] = array("title" => __("Manage"),
-                                                           "show" => in_array(true, $show["manage"]),
-                                                           "selected" => (in_array($action, $manage) or
-                                                                         match(array("/^manage_/",
-                                                                                     "/^edit_/",
-                                                                                     "/^delete_/",
-                                                                                     "/^new_/"), $action)));
+                "show" => in_array(true, $show["manage"]),
+                "selected" => (in_array($action, $manage) or
+                    match(array("/^manage_/", "/^edit_/", "/^delete_/", "/^new_/"), $action)));
 
             $this->context["navigation"]["settings"] = array("title" => __("Settings"),
-                                                             "show" => in_array(true, $show["settings"]),
-                                                             "selected" => (in_array($action, $settings) or
-                                                                           match("/_settings$/", $action)));
+                "show" => in_array(true, $show["settings"]),
+                "selected" => (in_array($action, $settings) or match("/_settings$/", $action)));
 
             $this->context["navigation"]["extend"] = array("title" => __("Extend"),
-                                                           "show" => in_array(true, $show["extend"]),
-                                                           "selected" => (in_array($action, $extend) or
-                                                                         match(array("/_extend$/",
-                                                                                     "/_editor$/"), $action)));
+                "show" => in_array(true, $show["extend"]),
+                "selected" => (in_array($action, $extend) or
+                    match(array("/_extend$/", "/_editor$/"), $action)));
 
             $this->subnav_context($route->action);
 
@@ -2512,10 +2515,10 @@
 
             $this->context["sql_debug"]  = SQL::current()->debug;
 
-            $file = MAIN_DIR."/admin/themes/%s/pages/".$action.".twig";
-            $template = file_exists(sprintf($file, $this->admin_theme)) ?
-                sprintf($file, $this->admin_theme) :
-                sprintf($file, "default");
+            $filePath = ADMIN_THEMES_DIR."/%s/".$action.".twig";
+            $template = file_exists(sprintf($filePath, $this->admin_theme)) ?
+                sprintf($filePath, $this->admin_theme) :
+                sprintf($filePath, "default");
 
             $config = Config::current();
             if (!file_exists($template)) {
@@ -2529,20 +2532,14 @@
                     error(__("Template Missing"), _f("Couldn't load template: <code>%s</code>", array($template)));
             }
 
-            # Try the theme first
             try {
-                $this->theme->getTemplate($template)->display($this->context);
-            } catch (Exception $t) {
-                # Fallback to the default
-                try {
-                    $this->default->getTemplate($template)->display($this->context);
-                } catch (Exception $e) {
-                    $prettify = preg_replace("/([^:]+): (.+)/", "\\1: <code>\\2</code>", $e->getMessage());
-                    $trace = debug_backtrace();
-                    $twig = array("file" => $e->filename, "line" => $e->lineno);
-                    array_unshift($trace, $twig);
-                    error(__("Error"), $prettify, $trace);
-                }
+                return $this->twig->display($action.".twig", $this->context);
+            } catch (Exception $e) {
+                $prettify = preg_replace("/([^:]+): (.+)/", "\\1: <code>\\2</code>", $e->getMessage());
+                $trace = debug_backtrace();
+                $twig = array("file" => $e->getTemplateFile(), "line" => $e->getTemplateLine());
+                array_unshift($trace, $twig);
+                error(__("Error"), $prettify, $trace);
             }
         }
 

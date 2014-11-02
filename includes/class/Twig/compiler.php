@@ -1,133 +1,276 @@
 <?php
-/**
- * Twig::Compiler
- * ~~~~~~~~~~~~~~
+
+/*
+ * This file is part of Twig.
  *
- * This module implements the Twig compiler.
+ * (c) 2009 Fabien Potencier
+ * (c) 2009 Armin Ronacher
  *
- * :copyright: 2008 by Armin Ronacher.
- * :license: BSD.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
-
-// mark the compiler as being included.  This use used by the public
-// `twig_load_compiler` function that loads the compiler system.
-define('TWIG_COMPILER_INCLUDED', true);
-require TWIG_BASE . '/lexer.php';
-require TWIG_BASE . '/parser.php';
-require TWIG_BASE . '/ast.php';
-
-
-function twig_compile($node, $fp=null)
+/**
+ * Compiles a node to PHP code.
+ *
+ * @author Fabien Potencier <fabien@symfony.com>
+ */
+class Twig_Compiler implements Twig_CompilerInterface
 {
-    if (!is_null($fp))
-        $compiler = new Twig_FileCompiler($fp);
-    else
-        $compiler = new Twig_StringCompiler();
-    $node->compile($compiler);
-    if (is_null($fp))
-        return $compiler->getCode();
-}
+    protected $lastLine;
+    protected $source;
+    protected $indentation;
+    protected $env;
+    protected $debugInfo;
+    protected $sourceOffset;
+    protected $sourceLine;
+    protected $filename;
 
-
-class Twig_Compiler
-{
-    private $last_lineno;
-
-    public function __construct()
+    /**
+     * Constructor.
+     *
+     * @param Twig_Environment $env The twig environment instance
+     */
+    public function __construct(Twig_Environment $env)
     {
-        $this->last_lineno = NULL;
+        $this->env = $env;
+        $this->debugInfo = array();
     }
 
-    public function format()
+    public function getFilename()
     {
-        $arguments = func_get_args();
-        $this->raw(call_user_func_array('sprintf', $arguments));
+        return $this->filename;
     }
 
-    public function string($value)
+    /**
+     * Returns the environment instance related to this compiler.
+     *
+     * @return Twig_Environment The environment instance
+     */
+    public function getEnvironment()
     {
-        $this->format('"%s"', addcslashes($value, "\t\""));
+        return $this->env;
     }
 
-    public function repr($value)
+    /**
+     * Gets the current PHP code after compilation.
+     *
+     * @return string The PHP code
+     */
+    public function getSource()
     {
-        if (is_int($value) || is_float($value))
-            $this->raw($value);
-        else if (is_null($value))
-            $this->raw('NULL');
-        else if (is_bool($value))
-            $this->raw($value ? 'true' : 'false');
-        else if (is_array($value)) {
-            $this->raw('array(');
-            $i = 0;
-            foreach ($value as $key => $value) {
-                if ($i++)
-                    $this->raw(', ');
-                $this->repr($key);
-                $this->raw(' => ');
-                $this->repr($value);
-            }
-            $this->raw(')');
-        }
-        else
-            $this->string($value);
+        return $this->source;
     }
 
-    public function pushContext()
+    /**
+     * Compiles a node.
+     *
+     * @param Twig_NodeInterface $node        The node to compile
+     * @param int                $indentation The current indentation
+     *
+     * @return Twig_Compiler The current compiler instance
+     */
+    public function compile(Twig_NodeInterface $node, $indentation = 0)
     {
-        $this->raw('$context[\'::parent\'] = $parent = $context;'. "\n");
-    }
-
-    public function popContext()
-    {
-        $this->raw('$context = $context[\'::parent\'];'. "\n");
-    }
-
-    public function addDebugInfo($node)
-    {
-        if ($node->lineno != $this->last_lineno) {
-            $this->last_lineno = $node->lineno;
-            $this->raw("/* LINE:$node->lineno */\n");
-        }
-    }
-}
-
-
-class Twig_FileCompiler extends Twig_Compiler
-{
-    private $fp;
-
-    public function __construct($fp)
-    {
-        parent::__construct();
-        $this->fp = $fp;
-    }
-
-    public function raw($string)
-    {
-        fwrite($this->fp, $string);
-    }
-}
-
-
-class Twig_StringCompiler extends Twig_Compiler
-{
-    private $source;
-
-    public function __construct()
-    {
-        parent::__construct();
+        $this->lastLine = null;
         $this->source = '';
+        $this->debugInfo = array();
+        $this->sourceOffset = 0;
+        // source code starts at 1 (as we then increment it when we encounter new lines)
+        $this->sourceLine = 1;
+        $this->indentation = $indentation;
+
+        if ($node instanceof Twig_Node_Module) {
+            $this->filename = $node->getAttribute('filename');
+        }
+
+        $node->compile($this);
+
+        return $this;
     }
 
+    public function subcompile(Twig_NodeInterface $node, $raw = true)
+    {
+        if (false === $raw) {
+            $this->addIndentation();
+        }
+
+        $node->compile($this);
+
+        return $this;
+    }
+
+    /**
+     * Adds a raw string to the compiled code.
+     *
+     * @param string $string The string
+     *
+     * @return Twig_Compiler The current compiler instance
+     */
     public function raw($string)
     {
         $this->source .= $string;
+
+        return $this;
     }
 
-    public function getCode()
+    /**
+     * Writes a string to the compiled code by adding indentation.
+     *
+     * @return Twig_Compiler The current compiler instance
+     */
+    public function write()
     {
-        return $this->source;
+        $strings = func_get_args();
+        foreach ($strings as $string) {
+            $this->addIndentation();
+            $this->source .= $string;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Appends an indentation to the current PHP code after compilation.
+     *
+     * @return Twig_Compiler The current compiler instance
+     */
+    public function addIndentation()
+    {
+        $this->source .= str_repeat(' ', $this->indentation * 4);
+
+        return $this;
+    }
+
+    /**
+     * Adds a quoted string to the compiled code.
+     *
+     * @param string $value The string
+     *
+     * @return Twig_Compiler The current compiler instance
+     */
+    public function string($value)
+    {
+        $this->source .= sprintf('"%s"', addcslashes($value, "\0\t\"\$\\"));
+
+        return $this;
+    }
+
+    /**
+     * Returns a PHP representation of a given value.
+     *
+     * @param mixed $value The value to convert
+     *
+     * @return Twig_Compiler The current compiler instance
+     */
+    public function repr($value)
+    {
+        if (is_int($value) || is_float($value)) {
+            if (false !== $locale = setlocale(LC_NUMERIC, 0)) {
+                setlocale(LC_NUMERIC, 'C');
+            }
+
+            $this->raw($value);
+
+            if (false !== $locale) {
+                setlocale(LC_NUMERIC, $locale);
+            }
+        } elseif (null === $value) {
+            $this->raw('null');
+        } elseif (is_bool($value)) {
+            $this->raw($value ? 'true' : 'false');
+        } elseif (is_array($value)) {
+            $this->raw('array(');
+            $first = true;
+            foreach ($value as $key => $v) {
+                if (!$first) {
+                    $this->raw(', ');
+                }
+                $first = false;
+                $this->repr($key);
+                $this->raw(' => ');
+                $this->repr($v);
+            }
+            $this->raw(')');
+        } else {
+            $this->string($value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Adds debugging information.
+     *
+     * @param Twig_NodeInterface $node The related twig node
+     *
+     * @return Twig_Compiler The current compiler instance
+     */
+    public function addDebugInfo(Twig_NodeInterface $node)
+    {
+        if ($node->getLine() != $this->lastLine) {
+            $this->write(sprintf("// line %d\n", $node->getLine()));
+
+            // when mbstring.func_overload is set to 2
+            // mb_substr_count() replaces substr_count()
+            // but they have different signatures!
+            if (((int) ini_get('mbstring.func_overload')) & 2) {
+                // this is much slower than the "right" version
+                $this->sourceLine += mb_substr_count(mb_substr($this->source, $this->sourceOffset), "\n");
+            } else {
+                $this->sourceLine += substr_count($this->source, "\n", $this->sourceOffset);
+            }
+            $this->sourceOffset = strlen($this->source);
+            $this->debugInfo[$this->sourceLine] = $node->getLine();
+
+            $this->lastLine = $node->getLine();
+        }
+
+        return $this;
+    }
+
+    public function getDebugInfo()
+    {
+        return $this->debugInfo;
+    }
+
+    /**
+     * Indents the generated code.
+     *
+     * @param int     $step The number of indentation to add
+     *
+     * @return Twig_Compiler The current compiler instance
+     */
+    public function indent($step = 1)
+    {
+        $this->indentation += $step;
+
+        return $this;
+    }
+
+    /**
+     * Outdents the generated code.
+     *
+     * @param int     $step The number of indentation to remove
+     *
+     * @return Twig_Compiler The current compiler instance
+     *
+     * @throws LogicException When trying to outdent too much so the indentation would become negative
+     */
+    public function outdent($step = 1)
+    {
+        // can't outdent by more steps than the current indentation level
+        if ($this->indentation < $step) {
+            throw new LogicException('Unable to call outdent() as the indentation would become negative');
+        }
+
+        $this->indentation -= $step;
+
+        return $this;
+    }
+
+    public function getVarName()
+    {
+        return sprintf('__internal_%s', hash('sha256', uniqid(mt_rand(), true), false));
     }
 }
