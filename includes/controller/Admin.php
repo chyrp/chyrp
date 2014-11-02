@@ -29,22 +29,8 @@
          * Prepares Twig.
          */
         private function __construct() {
+            $this->twig = Twig::current();
             $this->admin_theme = fallback(Config::current()->admin_theme, "default");
-
-            $cache = (is_writable(INCLUDES_DIR."/caches") && !DEBUG && !PREVIEWING &&
-                !defined('CACHE_TWIG') || CACHE_TWIG);
-
-            require_once INCLUDES_DIR."/class/TwigExtensions/Chyrp_Twig_Extension.php";
-
-            $templateDir = ADMIN_THEMES_DIR.'/'.$this->admin_theme;
-            $loader = new Twig_Loader_Filesystem($templateDir);
-
-            $twig_options =  array('cache' => $cache ? INCLUDES_DIR.'/caches' : false,
-                                   'debug' => true, 'autoescape' => false);
-
-            $this->twig = new Twig_Environment($loader, $twig_options);
-            $this->twig->addExtension(new Chyrp_Twig_Extension());
-            $this->twig->addExtension(new Twig_Extension_Debug());
         }
 
         /**

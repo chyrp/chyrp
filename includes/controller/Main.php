@@ -36,16 +36,7 @@
             $this->feed = (isset($_GET['feed']) or (isset($_GET['action']) and $_GET['action'] == "feed"));
             $this->post_limit = Config::current()->posts_per_page;
 
-            $cache = (is_writable(INCLUDES_DIR."/caches") && !DEBUG && !PREVIEWING &&
-                !defined('CACHE_TWIG') || CACHE_TWIG);
-
-            $loader = new Twig_Loader_Filesystem(THEME_DIR);
-            $twig_options =  array('cache' => $cache ? INCLUDES_DIR."/caches" : false,
-                                   'debug' => true, 'autoescape' => false);
-
-            $this->twig = new Twig_Environment($loader, $twig_options);
-            $this->twig->addExtension(new Chyrp_Twig_Extension());
-            $this->twig->addExtension(new Twig_Extension_Debug());
+            $this->twig = Twig::current();
         }
 
         /**

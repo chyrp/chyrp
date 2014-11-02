@@ -1,51 +1,92 @@
 <?php
+
+if (!defined('TWIG_BASE'))
+    define('TWIG_BASE', dirname(__FILE__) . '/Twig');
+
+# Load automatically on initialization.
+require TWIG_BASE . '/Autoloader.php';
+Twig_Autoloader::register();
+
+# Chyrp Twig extensions.
+require_once "TwigExtensions/Chyrp_Twig_Extension.php";
+
+/**
+* Twig Engine Setup
+*/
+class Twig
+{
     /**
-     * Twig
-     * ~~~~
-     *
-     * A simple cross-language template engine.
-     *
-     * Usage
-     * -----
-     *
-     * Using Twig in a application is straightfoward.  All you have to do is to
-     * make sure you have a folder where all your templates go and another one
-     * where the compiled templates go (which we call the cache)::
-     *
-     *  require 'Twig.php';
-     *  $loader = new Twig_Loader('path/to/templates', 'path/to/cache');
-     *
-     * After that you can load templates using the loader::
-     *
-     *  $template = $loader->getTemplate('index.html');
-     *
-     * You can render templates by using the render and display methods.  display
-     * works like render just that it prints the output whereas render returns
-     * the generated source as string.  Both accept an array as context::
-     *
-     *  echo $template->render(array('users' => get_list_of_users()));
-     *  $template->display(array('users' => get_list_of_users()));
-     *
-     * Custom Loaders
-     * --------------
-     *
-     * For many applications it's a good idea to subclass the loader to add
-     * support for multiple template locations.  For example many applications
-     * support plugins and you want to allow plugins to ship themes.
-     *
-     * The easiest way is subclassing Twig_Loader and override the getFilename
-     * method which calculates the path to the template on the file system.
-     *
-     *
-     * :copyright: 2008 by Armin Ronacher.
-     * :license: BSD.
+     * Templates path on filesystem
+     * @var string
      */
+    public $templateDir = '';
 
-    if (!defined('TWIG_BASE'))
-        define('TWIG_BASE', dirname(__FILE__) . '/Twig');
+    function __construct()
+    {
+        $this->templateDir = $this->getTemplateDirectory();
+        $this->twig = new Twig_Environment($this->getLoader($this->templateDir),
+            $this->getOptions());
+        $this->loadExtensions();
+    }
 
-    # load automatically on initialization.
-    require TWIG_BASE . '/Autoloader.php';
-    Twig_Autoloader::register();
+    private function getLoader($directory)
+    {
+        $loader = new Twig_Loader_Filesystem($directory);
 
-    require_once "TwigExtensions/Chyrp_Twig_Extension.php";
+        return $loader;
+    }
+
+    private function getTemplateDirectory()
+    {
+        if (ADMIN) {
+            $adminTheme = fallback(Config::current()->admin_theme, "default");
+            $templateDir = ADMIN_THEMES_DIR.'/'.$adminTheme;
+        } else {
+            $templateDir = THEME_DIR;
+        }
+
+        return $templateDir;
+    }
+
+    private function getOptions()
+    {
+        return array('cache' => $this->getCache(),
+                     'debug' => $this->getDebug(),
+                     'autoescape' => false);
+    }
+
+    private function getDebug()
+    {
+        return defined('DEBUG') ? true : false ;
+    }
+
+    private function getCache()
+    {
+        $cache = (is_writable(INCLUDES_DIR."/caches") && !DEBUG &&
+            !PREVIEWING && !defined('CACHE_TWIG') || CACHE_TWIG);
+
+        return ($cache ? INCLUDES_DIR."/caches" : false);
+    }
+
+    private function loadExtensions()
+    {
+        if ($this->getDebug())
+            $this->twig->addExtension(new Twig_Extension_Debug());
+
+        $this->twig->addExtension(new Chyrp_Twig_Extension());
+    }
+
+    public function display($file = null, $context = null)
+    {
+        return $this->twig->display($file, $context);
+    }
+
+    /**
+     * Function: current
+     * Returns a singleton reference to the current configuration.
+     */
+    public static function & current() {
+        static $instance = null;
+        return $instance = (empty($instance)) ? new self() : $instance ;
+    }
+}
