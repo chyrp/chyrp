@@ -1,47 +1,44 @@
 <?php
 
 /*
- * This file is part of Twig.
+ * This file is part of Chyrp.
  *
- * (c) 2009 Fabien Potencier
+ * (c) 2014 Arian Xhezairi
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
 /**
- * Autoloads Twig classes.
+ * Autoloads Chyrp's Twig Extensions classes.
  *
- * @author Fabien Potencier <fabien@symfony.com>
+ * @package    chyrp
+ * @author     Arian Xhezairi <email@chyrp.net>
  */
-class TwigExtensionAutoloader
+class Twig_Extensions_Autoloader
 {
     /**
-     * Registers Twig_Autoloader as an SPL autoloader.
-     *
-     * @param Boolean $prepend Whether to prepend the autoloader or not.
+     * Registers Twig_Extensions_Autoloader as an SPL autoloader.
      */
-    public static function register($prepend = false)
+    static public function register()
     {
-        if (version_compare(phpversion(), '5.3.0', '>=')) {
-            spl_autoload_register(array(new self, 'autoload'), true, $prepend);
-        } else {
-            spl_autoload_register(array(new self, 'autoload'));
-        }
+        spl_autoload_register(array(new self, 'autoload'));
     }
 
     /**
      * Handles autoloading of classes.
      *
-     * @param string $class A class name.
+     * @param  string  $class  A class name.
+     *
+     * @return boolean Returns true if the class has been loaded
      */
-    public static function autoload($class)
+    static public function autoload($class)
     {
-        if (0 !== strpos($class, 'Twig')) {
+        if (strpos($class, 'Twig_Extension') === false) {
             return;
         }
 
-        if (is_file($file = dirname(__FILE__).'/../'.str_replace(array('_', "\0"), array('/', ''), $class).'.php')) {
+        if (file_exists($file = dirname(__FILE__).'/'.str_replace('/', '_', $class).'.php')) {
             require $file;
         }
     }

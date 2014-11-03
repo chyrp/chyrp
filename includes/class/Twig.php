@@ -1,18 +1,20 @@
 <?php
 
-if (!defined('TWIG_BASE'))
-    define('TWIG_BASE', dirname(__FILE__) . '/Twig');
-
-# Load automatically on initialization.
-require TWIG_BASE . '/Autoloader.php';
-Twig_Autoloader::register();
-
-# Chyrp Twig extensions.
-require_once "TwigExtensions/Chyrp_Twig_Extension.php";
+/*
+ * This file is part of Chyrp.
+ *
+ * (c) 2014 Arian Xhezairi
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 /**
-* Twig Engine Setup
-*/
+ * Twig Template Engine Setup.
+ *
+ * @package    chyrp
+ * @author     Arian Xhezairi <email@chyrp.net>
+ */
 class Twig
 {
     /**
@@ -20,10 +22,13 @@ class Twig
      * @var string
      */
     public $templatePaths = array();
-    private $getLoader    = null;
+    private $loader       = null;
 
     private function __construct()
     {
+        Twig_Autoloader::register();
+        Twig_Extensions_Autoloader::register();
+
         $this->twig = new Twig_Environment($this->getLoader(), $this->getOptions());
         $this->loadExtensions();
     }

@@ -3,44 +3,43 @@
 require_once "Chyrp_Url_TokenParser.php";
 require_once "Chyrp_AdminUrl_TokenParser.php";
 require_once "Chyrp_PaginateLoop_TokenParser.php";
-// require_once INCLUDES_DIR."/helpers.php";
 
-class Twig_LoopContextIterator implements Iterator
-{
-    public $context;
-    public $seq;
-    public $idx;
-    public $length;
-    public $parent;
+// class Twig_LoopContextIterator implements Iterator
+// {
+//     public $context;
+//     public $seq;
+//     public $idx;
+//     public $length;
+//     public $parent;
 
-    public function __construct(&$context, $seq, $parent)
-    {
-        $this->context = $context;
-        $this->seq = $seq;
-        $this->idx = 0;
-        $this->length = count($seq);
-        $this->parent = $parent;
-    }
+//     public function __construct(&$context, $seq, $parent)
+//     {
+//         $this->context = $context;
+//         $this->seq = $seq;
+//         $this->idx = 0;
+//         $this->length = count($seq);
+//         $this->parent = $parent;
+//     }
 
-    public function rewind() {}
+//     public function rewind() {}
 
-    public function key() {}
+//     public function key() {}
 
-    public function valid()
-    {
-        return $this->idx < $this->length;
-    }
+//     public function valid()
+//     {
+//         return $this->idx < $this->length;
+//     }
 
-    public function next()
-    {
-        $this->idx++;
-    }
+//     public function next()
+//     {
+//         $this->idx++;
+//     }
 
-    public function current()
-    {
-        return $this;
-    }
-}
+//     public function current()
+//     {
+//         return $this;
+//     }
+// }
 
 /*
  * This file is part of Chyrp.
@@ -105,60 +104,60 @@ class Chyrp_Twig_Extension extends Twig_Extension
         $filters = array(
             // formatting filters
             // new Twig_SimpleFilter('date', array($this, 'twig_date_format_filter')),
-            'date' =>  new \Twig_Filter_Method($this, 'twig_date_format_filter'),
-            'strftime' =>  new \Twig_Filter_Method($this, 'twig_strftime_format_filter'),
-            'strtotime' => new \Twig_Filter_Function('strtotime'),
-            'numberformat' => new \Twig_Filter_Function('number_format'),
-            'moneyformat' => new \Twig_Filter_Function('money_format'),
             'filesizeformat' => new \Twig_Filter_Method($this, 'twig_filesize_format_filter'),
-            'format' => new \Twig_Filter_Function('sprintf'),
-            'relative' => new \Twig_Filter_Function('relative_time'),
+            'strftime'       => new \Twig_Filter_Method($this, 'twig_strftime_format_filter'),
+            'date'           => new \Twig_Filter_Method($this, 'twig_date_format_filter'),
+            'numberformat'   => new \Twig_Filter_Function('number_format'),
+            'relative'       => new \Twig_Filter_Function('relative_time'),
+            'moneyformat'    => new \Twig_Filter_Function('money_format'),
+            'strtotime'      => new \Twig_Filter_Function('strtotime'),
+            'format'         => new \Twig_Filter_Function('sprintf'),
 
             // numbers
+            'odd'  => new \Twig_Filter_Method($this, 'twig_is_odd_filter'),
             'even' => new \Twig_Filter_Method($this, 'twig_is_even_filter'),
-            'odd' => new \Twig_Filter_Method($this, 'twig_is_odd_filter'),
 
             // encoding
-            'quotes' => new \Twig_Filter_Method($this, 'twig_quotes_filter'),
             'slashes' => new \Twig_Filter_Function('addslashes'),
+            'quotes'  => new \Twig_Filter_Method($this, 'twig_quotes_filter'),
 
             // string filters
             // new Twig_SimpleFilter('translate', array($this, 'twig_translate_string_filter')),
             'translate' => new \Twig_Filter_Method($this, 'twig_translate_string_filter'),
             'translate_plural' => new \Twig_Filter_Method($this, 'twig_translate_plural_string_filter'),
 
-            'normalize' => new \Twig_Filter_Function('normalize'),
-            'truncate' => new \Twig_Filter_Method($this, 'twig_truncate_filter'),
-            'excerpt' => new \Twig_Filter_Method($this, 'twig_excerpt_filter'),
-            'replace' => new \Twig_Filter_Method($this, 'twig_replace_filter'),
-            'match' => new \Twig_Filter_Method($this, 'twig_match_filter'),
-            'contains' => new \Twig_Filter_Function('substr_count'),
-            'camelize' => new \Twig_Filter_Function('camelize'),
-            'pluralize' => new \Twig_Filter_Method($this, 'twig_pluralize_string_filter'),
+            'ltrim'       => new \Twig_Filter_Function('ltrim'),
+            'rtrim'       => new \Twig_Filter_Function('rtrim'),
+            'camelize'    => new \Twig_Filter_Function('camelize'),
+            'sanitize'    => new \Twig_Filter_Function('sanitize'),
+            'normalize'   => new \Twig_Filter_Function('normalize'),
+            'repeat'      => new \Twig_Filter_Function('str_repeat'),
+            'contains'    => new \Twig_Filter_Function('substr_count'),
+            'match'       => new \Twig_Filter_Method($this, 'twig_match_filter'),
+            'replace'     => new \Twig_Filter_Method($this, 'twig_replace_filter'),
+            'excerpt'     => new \Twig_Filter_Method($this, 'twig_excerpt_filter'),
+            'truncate'    => new \Twig_Filter_Method($this, 'twig_truncate_filter'),
+            'pluralize'   => new \Twig_Filter_Method($this, 'twig_pluralize_string_filter'),
             'depluralize' => new \Twig_Filter_Method($this, 'twig_depluralize_string_filter'),
-            'sanitize' => new \Twig_Filter_Function('sanitize'),
-            'repeat' => new \Twig_Filter_Function('str_repeat'),
-            'rtrim' => new \Twig_Filter_Function('rtrim'),
-            'ltrim' => new \Twig_Filter_Function('ltrim'),
 
             // string/array filters
+            'count'  => new \Twig_Filter_Function('count'),
             'offset' => new \Twig_Filter_Method($this, 'twig_offset_filter'),
-            'count' => new \Twig_Filter_Function('count'),
 
             // iteration and runtime
             'items' => new \Twig_Filter_Method($this, 'twig_get_array_items_filter'),
 
             // escaping
+            'e'      => new \Twig_Filter_Method($this, 'twig_escape_filter'),
             'escape' => new \Twig_Filter_Method($this, 'twig_escape_filter'),
-            'e' => new \Twig_Filter_Method($this, 'twig_escape_filter'),
 
             // Chyrp specific filters
-            'uploaded' => new \Twig_Filter_Function('uploaded'),
-            'fallback' => new \Twig_Filter_Function('oneof'),
-            'selected' => new \Twig_Filter_Method($this, 'twig_selected_filter'),
-            'checked' => new \Twig_Filter_Method($this, 'twig_checked_filter'),
+            'fallback'        => new \Twig_Filter_Function('oneof'),
+            'uploaded'        => new \Twig_Filter_Function('uploaded'),
+            'checked'         => new \Twig_Filter_Method($this, 'twig_checked_filter'),
+            'selected'        => new \Twig_Filter_Method($this, 'twig_selected_filter'),
+            'show_gravatar'   => new \Twig_Filter_Method($this, 'twig_show_gravatar_filter'),
             'option_selected' => new \Twig_Filter_Method($this, 'twig_option_selected_filter'),
-            'show_gravatar' => new \Twig_Filter_Method($this, 'twig_show_gravatar_filter'),
         );
 
        return $filters;

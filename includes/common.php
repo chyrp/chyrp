@@ -212,6 +212,14 @@
     # Chyrp's templating engine.
     require_once INCLUDES_DIR."/class/Twig.php";
 
+    # File: Twig Autoloader
+    # Chyrp's templating engine.
+    require_once INCLUDES_DIR."/class/Twig/Autoloader.php";
+
+    # File: Chyrp's Twig Extensions
+    # Chyrp's templating engine.
+    require_once INCLUDES_DIR."/class/TwigExtensions/Autoloader.php";
+
     # File: Route
     # See Also:
     #     <Route>
