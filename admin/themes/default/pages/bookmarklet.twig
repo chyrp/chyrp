@@ -3,8 +3,8 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <meta http-equiv="Content-Type" content="$theme.type; charset=utf-8" />
-        <title>${ "Chyrp!" | translate }</title>
+        <meta http-equiv="Content-Type" content="{{ theme.type }}; charset=utf-8" />
+        <title>{{ "Chyrp!" | translate }}</title>
         <style type="text/css">
             <!--/*--><![CDATA[/*><!--*/
             /* Reset */
@@ -135,23 +135,23 @@
             }
             /*]]>*/-->
         </style>
-        <script src="$site.chyrp_url/includes/lib/gz.php?file=jquery.js" type="text/javascript" charset="utf-8"></script>
-        <script src="$site.chyrp_url/includes/lib/gz.php?file=plugins.js" type="text/javascript" charset="utf-8"></script>
+        <script src="{{ site.chyrp_url ~ '/includes/lib/gz.php?file=jquery.js' }}" type="text/javascript" charset="utf-8"></script>
+        <script src="{{ site.chyrp_url ~ '/includes/lib/gz.php?file=plugins.js' }}" type="text/javascript" charset="utf-8"></script>
         <script type="text/javascript">
             <!--//--><![CDATA[//><!--
             function activate_nav_tab(id) {
-                $$("[class^='nav_']").removeClass("selected")
-                $$("[id$$='_form']").hide()
-                $$("#"+id+"_form").show()
-                $$(".nav_" + id).addClass("selected")
+                $("[class^='nav_']").removeClass("selected")
+                $("[id$$='_form']").hide()
+                $("#"+id+"_form").show()
+                $(".nav_" + id).addClass("selected")
 
-                $$("#"+id+"_form input.text").expand()
+                $("#"+id+"_form input.text").expand()
             }
-            $$(function(){
-                $$("form:visible input.text").expand()
+            $(function(){
+                $("form:visible input.text").expand()
 
-                $$(".navigation li").css("float", "left")
-                $$(".navigation").sortable({
+                $(".navigation li").css("float", "left")
+                $(".navigation").sortable({
                     axis: "x",
                     containment: ".navigation",
                     placeholder: "feathers_sort",
@@ -159,7 +159,7 @@
                     delay: 1,
                     revert: true,
                     update: function(){
-                        $$.post("$site.chyrp_url/includes/ajax.php", "action=reorder_feathers&"+$$(".navigation").sortable("serialize"))
+                        $.post("{{ site.chyrp_url ~ '/includes/ajax.php' }}", "action=reorder_feathers&"+$(".navigation").sortable("serialize"))
                     }
                 })
             })
@@ -170,8 +170,8 @@
         {% if site.enabled_feathers | length > 1 %}
         <ul class="navigation">
             {% for feather in feathers %}
-            <li id="list_feathers[$feather.safename]" class="nav_$feather.safename${ feather.safename | selected(selected_feather.safename, true) }">
-                <a href="javascript:activate_nav_tab('$feather.safename')">$feather.name</a>
+            <li id="list_feathers[{{ feather.safename }}]" class="nav_{{ feather.safename }}{{ feather.safename | selected(selected_feather.safename, true) }}">
+                <a href="javascript:activate_nav_tab('{{ feather.safename }}')">{{ feather.name }}</a>
             </li>
             {% endfor %}
         </ul>
@@ -179,46 +179,46 @@
         {% endif %}
         <div class="content">
             {% for feather in feathers %}
-            <form action="$site.chyrp_url/admin/?action=add_post" id="${ feather.safename }_form"{% if feather.safename != selected_feather.safename %} style="display: none"{% endif %} method="post" accept-charset="utf-8" enctype="multipart/form-data">
+            <form action="{{ site.chyrp_url ~ '/admin/?action=add_post' }}" id="{{ feather.safename }}_form"{% if feather.safename != selected_feather.safename %} style="display: none"{% endif %} method="post" accept-charset="utf-8" enctype="multipart/form-data">
                 <fieldset>
-                    ${ trigger.call("before_bookmarklet_fields", feather) }
+                    {{ trigger.call("before_bookmarklet_fields", feather) }}
                     {% for field in feather.fields %}
                     <p>
-                        <label for="$field.attr">
-                            $field.label
+                        <label for="{{ field.attr }}">
+                            {{ field.label }}
                             {% if field.optional %}
-                            <span class="sub">${ "(optional)" | translate }</span>
+                            <span class="sub">{{ "(optional)" | translate }}</span>
                             {% endif %}
                             {% if field.help %}
                             <span class="sub">
-                                <a href="{% admin "help&id="~field.help %}" class="help emblem"><img src="$theme_url/images/icons/help.svg" alt="help" /></a>
+                                <a href="{% admin "help&id="~field.help %}" class="help emblem"><img src="{{ theme_url ~ '/images/icons/help.svg' }}" alt="help" /></a>
                             </span>
                             {% endif %}
                         </label>
                         {% if field.type == "text" or field.type == "file" %}
-                        <input class="$field.type{% if field.classes %} ${ field.classes | join(" ") }{% endif %}" type="$field.type" name="$field.attr" value="{% if not field.no_value %}${ field.value | fallback(args[field.bookmarklet] | escape) }{% endif %}" id="$field.attr" />
+                        <input class="{{ field.type }}{% if field.classes %} {{ field.classes | join(" ") }}{% endif %}" type="{{ field.type }}" name="{{ field.attr }}" value="{% if not field.no_value %}{{ field.value | fallback(args[field.bookmarklet] | escape) }}{% endif %}" id="{{ field.attr }}" />
                         {% elseif field.type == "text_block" %}
-                        <textarea class="wide{% if field.classes %} ${ field.classes | join(" ") }{% endif %}" rows="${ field.rows | fallback(10) }" name="$field.attr" id="$field.attr" cols="50">{% if not field.no_value %}${ field.value | fallback(args[field.bookmarklet] | escape) }{% endif %}</textarea>
+                        <textarea class="wide{% if field.classes %} {{ field.classes | join(" ") }}{% endif %}" rows="{{ field.rows | fallback(10) }}" name="{{ field.attr }}" id="{{ field.attr }}" cols="50">{% if not field.no_value %}{{ field.value | fallback(args[field.bookmarklet] | escape) }}{% endif %}</textarea>
                         {% elseif field.type == "select" %}
-                        <select name="$field.attr" id="$field.attr"{% if field.classes %} class="${ field.classes | join(" ") }"{% endif %}>
+                        <select name="{{ field.attr }}" id="{{ field.attr }}"{% if field.classes %} class="{{ field.classes | join(" ") }}"{% endif %}>
                             {% for value, name in field.options | items %}
-                            <option value="${ value | escape }"{% if not field.no_value %}${ value | option_selected(field.value | fallback(args[field.bookmarklet] | escape)) }{% endif %}>${ name | escape }</option>
+                            <option value="{{ value | escape }}"{% if not field.no_value %}{{ value | option_selected(field.value | fallback(args[field.bookmarklet] | escape)) }}{% endif %}>{{ name | escape }}</option>
                             {% endfor %}
                         </select>
                         {% endif %}
                     </p>
                     {% endfor %}
-                    ${ trigger.call("after_post_fields", feather) }
+                    {{ trigger.call("after_post_fields", feather) }}
                     <div class="buttons">
                         <button type="submit">
-                            ${ "Publish" | translate }
+                            {{ "Publish" | translate }}
                         </button>
-                        <input type="hidden" name="feather" value="$feather.safename" id="feather" />
+                        <input type="hidden" name="feather" value="{{ feather.safename }}" id="feather" />
                         <input type="hidden" name="slug" value="" id="slug" />
                         <input type="hidden" name="bookmarklet" value="true" id="bookmarklet" />
-                        <input type="hidden" name="hash" value="$site.secure_hashkey" id="hash" />
+                        <input type="hidden" name="hash" value="{{ site.secure_hashkey }}" id="hash" />
                     </div>
-${ trigger.call("bookmarklet_fields") }
+{{ trigger.call("bookmarklet_fields") }}
                 </fieldset>
             </form>
             {% endfor %}
@@ -230,8 +230,8 @@ ${ trigger.call("bookmarklet_fields") }
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
-        <meta http-equiv="Content-Type" content="$theme.type; charset=utf-8"/>
-        <title>${ "Chyrp!" | translate }</title>
+        <meta http-equiv="Content-Type" content="{{ theme.type }}; charset=utf-8"/>
+        <title>{{ "Chyrp!" | translate }}</title>
         <style type="text/css">
             <!--/*--><![CDATA[/*><!--*/
             body {
@@ -255,9 +255,9 @@ ${ trigger.call("bookmarklet_fields") }
                 el = document.getElementById('countdown')
 
                 if (countdown == 1)
-                    el.firstChild.nodeValue = "${ "or wait 1 seconds." | translate }"
+                    el.firstChild.nodeValue = "{{ "or wait 1 seconds." | translate }}"
                 else if (countdown > 0)
-                    el.firstChild.nodeValue = "${ "or wait 2 seconds." | translate }"
+                    el.firstChild.nodeValue = "{{ "or wait 2 seconds." | translate }}"
                 else
                     self.close()
 
@@ -271,12 +271,12 @@ ${ trigger.call("bookmarklet_fields") }
     </head>
     <body>
         <div id="content">
-            <div style="margin-bottom: 10px; font-size: 40px; color: #777;">${ "Done!" | translate }</div>
+            <div style="margin-bottom: 10px; font-size: 40px; color: #777;">{{ "Done!" | translate }}</div>
 
-            <a href="javascript:void(0)" onclick="javascript:self.close(); return false;" style="color: #777;">${ "Close this window" | translate }</a>
+            <a href="javascript:void(0)" onclick="javascript:self.close(); return false;" style="color: #777;">{{ "Close this window" | translate }}</a>
 
             <span id="countdown" style="color:#777;">
-                ${ "or wait 3 seconds." | translate }
+                {{ "or wait 3 seconds." | translate }}
             </span>
         </div>
         <script type="text/javascript">
