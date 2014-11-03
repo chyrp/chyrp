@@ -19,7 +19,8 @@ class Twig
      * Templates path on filesystem
      * @var string
      */
-    public $templatePaths  = array();
+    public $templatePaths = array();
+    private $getLoader    = null;
 
     private function __construct()
     {
@@ -35,7 +36,9 @@ class Twig
     private function getLoader()
     {
         $this->setTemplatePaths();
-        return new Twig_Loader_Filesystem($this->templatePaths);
+        $this->loader = new Twig_Loader_Filesystem($this->templatePaths);
+
+        return $this->loader;
     }
 
     private function setTemplatePaths()
