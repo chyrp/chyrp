@@ -19,33 +19,41 @@ class Twig
      * Templates path on filesystem
      * @var string
      */
-    public $templateDir = '';
+    public $templatePaths  = array();
 
-    function __construct()
+    private function __construct()
     {
-        $this->templateDir = $this->getTemplateDirectory();
-        $this->twig = new Twig_Environment($this->getLoader($this->templateDir),
-            $this->getOptions());
+        $this->twig = new Twig_Environment($this->getLoader(), $this->getOptions());
         $this->loadExtensions();
     }
 
-    private function getLoader($directory)
+    public function addTemplatePath($path = null)
     {
-        $loader = new Twig_Loader_Filesystem($directory);
-
-        return $loader;
+        $this->loader->prependPath($path);
     }
 
-    private function getTemplateDirectory()
+    private function getLoader()
+    {
+        $this->setTemplatePaths();
+        return new Twig_Loader_Filesystem($this->templatePaths);
+    }
+
+    private function setTemplatePaths()
     {
         if (ADMIN) {
             $adminTheme = fallback(Config::current()->admin_theme, "default");
-            $templateDir = ADMIN_THEMES_DIR.'/'.$adminTheme;
+            $this->templatePaths[] = ADMIN_THEMES_DIR.'/'.$adminTheme;
         } else {
-            $templateDir = THEME_DIR;
+            $this->templatePaths[] = THEME_DIR;
         }
+    }
 
-        return $templateDir;
+    private function loadExtensions()
+    {
+        if ($this->getDebug())
+            $this->twig->addExtension(new Twig_Extension_Debug());
+
+        $this->twig->addExtension(new Chyrp_Twig_Extension());
     }
 
     private function getOptions()
@@ -57,7 +65,7 @@ class Twig
 
     private function getDebug()
     {
-        return defined('DEBUG') ? true : false ;
+        return DEBUG ? true : false ;
     }
 
     private function getCache()
@@ -66,14 +74,6 @@ class Twig
             !PREVIEWING && !defined('CACHE_TWIG') || CACHE_TWIG);
 
         return ($cache ? INCLUDES_DIR."/caches" : false);
-    }
-
-    private function loadExtensions()
-    {
-        if ($this->getDebug())
-            $this->twig->addExtension(new Twig_Extension_Debug());
-
-        $this->twig->addExtension(new Chyrp_Twig_Extension());
     }
 
     public function display($file = null, $context = null)
