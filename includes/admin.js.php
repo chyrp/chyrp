@@ -26,32 +26,8 @@ $(function(){
             $(this).val($(this).val().replace(/([^\\]|^)\\ct/gm, "  "))
     })
 
+    // Responsive Sub-Nav Menu
     $(".flexnav").flexNav({ 'animationSpeed' : 'fast' });
-    
-    <?php if (Config::current()->enable_wysiwyg) : ?>
-    // Use RedactorJS for <textarea> elements.
-    var fullStack = ["#body_field", "#body"]
-    $.each(fullStack, function(index, element) {
-        $(element).redactor({
-            toolbarFixedBox: true,
-            minHeight: 140,
-            focus: true,
-            imageUpload: "../includes/uploader.php",
-            imageGetJson: "../includes/uploaded.php"
-        })
-    })
-
-    var miniStack = ["#quote_field", "#description_field", "#caption_field", "#dialogue_field"]
-    $.each(miniStack, function(index, element) {
-        $(element).redactor({
-            toolbarFixedBox: true,
-            minHeight: 140,
-            focus: true,
-            buttons: ['html', '|', 'formatting', '|', 'bold', 'italic', 'deleted', '|',
-                      'unorderedlist', 'orderedlist', 'link']
-        })
-    })
-    <?php endif; ?>
 
     // SVG fallback for browsers that do not support SVG images
     $("img").fixsvg()
