@@ -34,7 +34,7 @@
         }
 
         public function add_jplayer_script($scripts) {
-            $scripts[] = Config::current()->chyrp_url."/feathers/audio/jplayer/jquery.jplayer.js";
+            $scripts[] = Config::current()->chyrp_url."/contents/feathers/audio/lib/jplayer/jquery.jplayer.js";
             return $scripts;
         }
 
@@ -104,40 +104,29 @@
             switch($file_ext) {
                 case "mp3":
                     return "audio/mpeg";
+                    break;
                 case "m4a":
-                    return "audio/mp4";
                 case "mp4":
                     return "audio/mp4";
+                    break;
                 case "oga":
-                    return "audio/ogg";
                 case "ogg":
                     return "audio/ogg";
+                    break;
                 case "webm":
                     return "audio/webm";
+                    break;
                 default:
                     return "application/octet-stream";
+                    break;
             }
         }
 
         public function audio_ext($filename) {
             $file_split = explode(".", $filename);
             $audio_type = strtolower(end($file_split));
-            switch($audio_type) {
-                case "mp3":
-                    return "mp3";
-                case "m4a":
-                    return "m4a";
-                case "mp4":
-                    return "mp4";
-                case "oga":
-                    return "oga";
-                case "ogg":
-                    return "ogg";
-                case "webm":
-                    return "webm";
-                default:
-                    return "application/octet-stream";
-            }
+
+            return $audio_type;
         }
 
         public function enclose_audio($post) {
@@ -199,7 +188,7 @@
             $player.= "\n\t".'</div>';
 
             if (!file_exists(THEME_DIR."/stylesheets/jplayer.css"))
-                $player.= "\n\t".'<link href="'.$config->chyrp_url.'/feathers/audio/skin/blue.monday.hd/jplayer.blue.monday.hd.css" rel="stylesheet" type="text/css" />';
+                $player.= "\n\t".'<link href="'.$config->chyrp_url.'/contents/feathers/audio/lib/jplayer/skin/blue.monday.hd/jplayer.blue.monday.hd.css" rel="stylesheet" type="text/css" />';
 
             $player.= "\n\t".'<script>';
             $player.= "\n\t".'$(function(){';
@@ -212,7 +201,7 @@
             $player.= "\n\t\t\t".'play: function() {';
             $player.= "\n\t\t\t\t".'$(this).jPlayer("pauseOthers");';
             $player.= "\n\t\t\t".'},';
-            $player.= "\n\t\t\t".'swfPath: "'.$config->chyrp_url.'/feathers/audio/jplayer/",';
+            $player.= "\n\t\t\t".'swfPath: "'.$config->chyrp_url.'/contents/feathers/audio/lib/jplayer/",';
             $player.= "\n\t\t\t".'supplied: "'.$this->audio_ext($post->filename).'",';
             $player.= "\n\t\t\t".'wmode:"window",';
             $player.= "\n\t\t\t".'solution: "html,flash",';
