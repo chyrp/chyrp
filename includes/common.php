@@ -71,17 +71,21 @@
     # Absolute path to /includes
     define('INCLUDES_DIR', MAIN_DIR."/includes");
 
+    # Constant: CONTENTS_DIR
+    # Absolute path to /contents
+    define('CONTENTS_DIR', MAIN_DIR."/contents");
+
     # Constant: MODULES_DIR
     # Absolute path to /modules
-    define('MODULES_DIR', MAIN_DIR."/modules");
+    define('MODULES_DIR', CONTENTS_DIR."/modules");
 
     # Constant: FEATHERS_DIR
     # Absolute path to /feathers
-    define('FEATHERS_DIR', MAIN_DIR."/feathers");
+    define('FEATHERS_DIR', CONTENTS_DIR."/feathers");
 
     # Constant: THEMES_DIR
     # Absolute path to /themes
-    define('THEMES_DIR', MAIN_DIR."/themes");
+    define('THEMES_DIR', CONTENTS_DIR."/themes");
 
     # Constant: ADMIN_THEMES_DIR
     # Absolute path to /admin/themes
@@ -289,11 +293,11 @@
 
     # Constant: THEME_DIR
     # Absolute path to /themes/(current/previewed theme)
-    define('THEME_DIR', MAIN_DIR."/themes/".(PREVIEWING ? $_SESSION['theme'] : $config->theme));
+    define('THEME_DIR', CONTENTS_DIR."/themes/".(PREVIEWING ? $_SESSION['theme'] : $config->theme));
 
     # Constant: THEME_URL
     # URL to /themes/(current/previewed theme)
-    define('THEME_URL', $config->chyrp_url."/themes/".(PREVIEWING ? $_SESSION['theme'] : $config->theme));
+    define('THEME_URL', $config->chyrp_url."/contents/themes/".(PREVIEWING ? $_SESSION['theme'] : $config->theme));
 
     # Constant: ASSETS_DIR
     # Absolute path to /assets
