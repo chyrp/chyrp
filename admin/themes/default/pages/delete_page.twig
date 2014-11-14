@@ -14,7 +14,7 @@
                         <h2><input type="checkbox" name="destroy_children{# OH, THE HORROR! #}" value="" id="destroy_children" /> {{ "Delete children?" | translate }}</h2>
                         <ul class="noitalic">
                         {% for child in page.children %}
-                            <li><a href="{{ child.url }}">{{ child.title }}</a></li>
+                            <li><a href="{{ child.url() }}">{{ child.title }}</a></li>
                         {% endfor %}
                         </ul>
                         {% endif %}
