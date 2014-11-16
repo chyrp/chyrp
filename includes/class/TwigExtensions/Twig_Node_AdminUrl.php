@@ -12,7 +12,6 @@ class Twig_Node_AdminUrl extends Twig_Node implements Twig_NodeOutputInterface
 
     public function compile(Twig_Compiler $compiler)
     {
-
         $compiler->addDebugInfo($this)
                  ->raw('echo fix(Config::current()->chyrp_url."/admin/?action=".(')
                  ->subcompile($this->getNode('expr'))

@@ -11,7 +11,7 @@ class Twig_Node_PaginateLoop extends Twig_Node
     {
         parent::__construct(array('per_page' => $per_page, 'items' =>  $items,
                                   'seq' => $target, 'mod' => $mod,
-                                  'body' => $body, 'else' => $else),
+                                  'body' => $body, 'else' => $else, ),
                             array(), $lineno, $tag);
     }
 
@@ -23,7 +23,7 @@ class Twig_Node_PaginateLoop extends Twig_Node
         // {% else %}
         // <li class="no_comments"></li> {# Needed for AJAX commenting and XHTML Strict validation. #}
         // {% endpaginate %}
-    
+
         # {% for post in posts.paginated %}
 
 
@@ -45,27 +45,28 @@ class Twig_Node_PaginateLoop extends Twig_Node
         // }
 
         // $context = $context['::parent'];
-        // echo "\n</ol>\n";   
+        // echo "\n</ol>\n";
 
         $compiler->addDebugInfo($this)
-                 ->raw('$context[\'_parent\'] = $_parent = $context;'. "\n") // $context['::parent'] = $parent = $context;
+                 ->raw('$context[\'_parent\'] = $_parent = $context;'."\n") // $context['::parent'] = $parent = $context;
                  ->raw('twig_paginate($context,')                            // twig_paginate($context,
-                 ->raw('"'.$this->getNode('items')->name.'", ');             // "comments", 
+                 ->raw('"'.$this->getNode('items')->name.'", ');             // "comments",
 
         if (!is_null($this->getNode('seq')) and isset($this->getNode('seq')->attr)) {
             $compiler->raw('array($context["_parent"]["')                    // array($context["::parent"]["
                      ->raw($this->getNode('seq')->name.'"],')                // post"],
                      ->raw('"'.$this->getNode('seq')->attr.'")');            // "comments"),
-        } else
+        } else {
             $compiler->subcompile($this->getNode('seq'));
-        
+        }
+
         $compiler->raw(', ')
                  ->subcompile($this->getNode('per_page'))                      // "comments_per_page")
                  ->raw(");\n")                                                 // );
                  ->raw('foreach (twig_iterate($context,')                      // foreach (twig_iterate($context,
                  ->raw(' $context["_parent"]["'.$this->getNode('items')->name) // $context["::parent"]["comments
                  ->raw("\"]->paginated) as \$iterator) {\n")                   // "]->paginated) as $iterator) {
-                 ->write('twig_set_loop_context($context, $iterator, ')        // twig_set_loop_context($context, $iterator, 
+                 ->write('twig_set_loop_context($context, $iterator, ')        // twig_set_loop_context($context, $iterator,
                  ->repr($this->getNode('mod')->attr->value)                    // "comment"
                  ->raw(");\n")                                                 // );
                  ->subcompile($this->getNode('body'))                          //     twig_get_current_template()->loader->getTemplate("content/comment.twig")->display($context);
@@ -76,6 +77,6 @@ class Twig_Node_PaginateLoop extends Twig_Node
                      ->subcompile($this->getNode('else'))
                      ->raw('}');
         }
-        $compiler->raw('$context = $context["_parent"];'. "\n"); # $compiler->popContext();
+        $compiler->raw('$context = $context["_parent"];'."\n"); # $compiler->popContext();
     }
 }

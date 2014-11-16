@@ -152,6 +152,8 @@ class Chyrp_Twig_Extension extends Twig_Extension
             'escape' => new \Twig_Filter_Method($this, 'twig_escape_filter'),
 
             // Chyrp specific filters
+            // 'read_more'       => new \Twig_Filter_Method($this, 'twig_read_more_filter'),
+            'read_more'        => new \Twig_Filter_Function('read_more'),
             'fallback'        => new \Twig_Filter_Function('oneof'),
             'uploaded'        => new \Twig_Filter_Function('uploaded'),
             'checked'         => new \Twig_Filter_Method($this, 'twig_checked_filter'),
@@ -160,7 +162,7 @@ class Chyrp_Twig_Extension extends Twig_Extension
             'option_selected' => new \Twig_Filter_Method($this, 'twig_option_selected_filter'),
         );
 
-       return $filters;
+        return $filters;
     }
 
     public function getFunctions()
@@ -205,42 +207,47 @@ class Chyrp_Twig_Extension extends Twig_Extension
      */
     public function twig_paginate(&$context, $as, $over, $per_page)
     {
-        $name = (in_array("page", Paginator::$names)) ? $as."_page" : "page" ;
+        $name = (in_array("page", Paginator::$names)) ? $as."_page" : "page";
 
-        if (count($over) == 2 and $over[0] instanceof Model and is_string($over[1]))
+        if (count($over) == 2 and $over[0] instanceof Model and is_string($over[1])) {
             return $context[$as] = $context["::parent"][$as] = new Paginator($over[0]->__getPlaceholders($over[1]), $per_page, $name);
-        else
+        } else {
             return $context[$as] = $context["::parent"][$as] = new Paginator($over, $per_page, $name);
+        }
     }
 
-    function twig_iterate(&$context, $seq)
+    public function twig_iterate(&$context, $seq)
     {
         $parent = isset($context['loop']) ? $context['loop'] : null;
         $seq = twig_make_array($seq);
         $context['loop'] = array('parent' => $parent, 'iterated' => false);
+
         return new Twig_LoopContextIterator($context, $seq, $parent);
     }
 
-    function twig_make_array($object)
+    public function twig_make_array($object)
     {
-        if (is_array($object))
+        if (is_array($object)) {
             return array_values($object);
-        elseif (is_object($object)) {
+        } elseif (is_object($object)) {
             $result = array();
-            foreach ($object as $value)
+            foreach ($object as $value) {
                 $result[] = $value;
+            }
+
             return $result;
         }
+
         return array();
     }
 
-    function twig_set_loop_context(&$context, $iterator, $target)
+    public function twig_set_loop_context(&$context, $iterator, $target)
     {
         $context[$target] = $iterator->seq[$iterator->idx];
         $context['loop'] = twig_make_loop_context($iterator);
     }
 
-    function twig_make_loop_context($iterator)
+    public function twig_make_loop_context($iterator)
     {
         return array(
             'parent' =>     $iterator->parent,
@@ -248,154 +255,185 @@ class Chyrp_Twig_Extension extends Twig_Extension
             'index0' =>     $iterator->idx,
             'index' =>      $iterator->idx + 1,
             'revindex0' =>  $iterator->length - $iterator->idx - 1,
-            'revindex '=>   $iterator->length - $iterator->idx,
+            'revindex ' =>   $iterator->length - $iterator->idx,
             'first' =>      $iterator->idx == 0,
             'last' =>       $iterator->idx + 1 == $iterator->length,
-            'iterated' =>   true
+            'iterated' =>   true,
         );
     }
 
-    public function twig_date_format_filter($timestamp, $format='F j, Y, G:i')
+    public function twig_date_format_filter($timestamp, $format = 'F j, Y, G:i')
     {
         return when($format, $timestamp);
     }
 
-    public function twig_strftime_format_filter($timestamp, $format='%x %X')
+    public function twig_strftime_format_filter($timestamp, $format = '%x %X')
     {
         return when($format, $timestamp, true);
     }
 
-    function twig_filesize_format_filter($value)
+    public function twig_filesize_format_filter($value)
     {
-        $value = max(0, (int)$value);
+        $value = max(0, (int) $value);
         $places = strlen($value);
         if ($places <= 9 && $places >= 7) {
             $value = number_format($value / 1048576, 1);
+
             return "$value MB";
         }
         if ($places >= 10) {
             $value = number_format($value / 1073741824, 1);
+
             return "$value GB";
         }
         $value = number_format($value / 1024, 1);
+
         return "$value KB";
     }
 
-    function twig_is_even_filter($value)
+    public function twig_is_even_filter($value)
     {
         return $value % 2 == 0;
     }
 
-    function twig_is_odd_filter($value)
+    public function twig_is_odd_filter($value)
     {
         return $value % 2 == 1;
     }
 
-    function twig_quotes_filter($string) {
+    public function twig_quotes_filter($string)
+    {
         return str_replace(array('"', "'"), array('\"', "\\'"), $string);
     }
 
-    public function twig_translate_string_filter($string, $domain = "theme") {
-        $domain = ($domain == "theme" and ADMIN) ? "chyrp" : $domain ;
+    public function twig_translate_string_filter($string, $domain = "theme")
+    {
+        $domain = ($domain == "theme" and ADMIN) ? "chyrp" : $domain;
+
         return __($string, $domain);
     }
 
-    public function twig_translate_plural_string_filter($single, $plural, $number, $domain = "theme") {
-        $domain = ($domain == "theme" and ADMIN) ? "chyrp" : $domain ;
+    public function twig_translate_plural_string_filter($single, $plural, $number, $domain = "theme")
+    {
+        $domain = ($domain == "theme" and ADMIN) ? "chyrp" : $domain;
+
         return _p($single, $plural, $number, $domain);
     }
 
-    function twig_truncate_filter($text, $length = 100, $ending = "...", $exact = false, $html = true) {
+    public function twig_truncate_filter($text, $length = 100, $ending = "...", $exact = false, $html = true)
+    {
         return truncate($text, $length, $ending, $exact, $html);
     }
 
-    function twig_excerpt_filter($text, $length = 200, $ending = "...", $exact = false, $html = true) {
-        $paragraphs = preg_split("/(\r?\n\r?\n|\r\r)/", $text);
-        if (count($paragraphs) > 1)
-            return $paragraphs[0];
-        else
-            return truncate($text, $length, $ending, $exact, $html);
-    }
-
-    function twig_replace_filter($str, $search, $replace, $regex = false)
+    public function twig_excerpt_filter($text, $length = 200, $ending = "...", $exact = false, $html = true)
     {
-        if ($regex)
-            return preg_replace($search, $replace, $str);
-        else
-            return str_replace($search, $replace, $str);
+        $paragraphs = preg_split("/(\r?\n\r?\n|\r\r)/", $text);
+        if (count($paragraphs) > 1) {
+            return $paragraphs[0];
+        } else {
+            return truncate($text, $length, $ending, $exact, $html);
+        }
     }
 
-    function twig_match_filter($str, $match)
+    public function twig_replace_filter($str, $search, $replace, $regex = false)
+    {
+        if ($regex) {
+            return preg_replace($search, $replace, $str);
+        } else {
+            return str_replace($search, $replace, $str);
+        }
+    }
+
+    public function twig_match_filter($str, $match)
     {
         return preg_match($match, $str);
     }
 
-    function twig_pluralize_string_filter($string, $number = null) {
-        if ($number and $number == 1)
+    public function twig_pluralize_string_filter($string, $number = null)
+    {
+        if ($number and $number == 1) {
             return $string;
-        else
+        } else {
             return pluralize($string);
+        }
     }
 
-    function twig_depluralize_string_filter($string) {
+    public function twig_depluralize_string_filter($string)
+    {
         return depluralize($string);
     }
 
-    function twig_offset_filter($array, $offset = 0) {
+    public function twig_offset_filter($array, $offset = 0)
+    {
         return $array[$offset];
     }
 
-    function twig_get_array_items_filter($array)
+    public function twig_get_array_items_filter($array)
     {
         $result = array();
-        foreach ($array as $key => $value)
+        foreach ($array as $key => $value) {
             $result[] = array($key, $value);
+        }
+
         return $result;
     }
 
-    function twig_escape_filter($string, $quotes = true, $decode = true) {
-        if (!is_string($string)) # Certain post attributes might be parsed from YAML to an array,
-            return $string;      # in which case the module provides a value. However, the attr
+    public function twig_escape_filter($string, $quotes = true, $decode = true)
+    {
+        if (!is_string($string)) {# Certain post attributes might be parsed from YAML to an array,
+            return $string;
+        }      # in which case the module provides a value. However, the attr
                                  # is still passed to the "fallback" and "fix" filters when editing.
 
         $safe = fix($string, $quotes);
-        return $decode ? preg_replace("/&amp;(#?[A-Za-z0-9]+);/", "&\\1;", $safe) : $safe ;
+
+        return $decode ? preg_replace("/&amp;(#?[A-Za-z0-9]+);/", "&\\1;", $safe) : $safe;
     }
 
-    function twig_selected_filter($foo) {
+    public function twig_selected_filter($foo)
+    {
         $try = func_get_args();
         array_shift($try);
 
         $just_class = (end($try) === true);
-        if ($just_class)
+        if ($just_class) {
             array_pop($try);
+        }
 
         if (is_array($try[0])) {
-            foreach ($try as $index => $it)
-                if ($index)
+            foreach ($try as $index => $it) {
+                if ($index) {
                     $try[0][] = $it;
+                }
+            }
 
             $try = $try[0];
         }
 
-        if (in_array($foo, $try))
-            return ($just_class) ? " selected" : ' class="selected"' ;
+        if (in_array($foo, $try)) {
+            return ($just_class) ? " selected" : ' class="selected"';
+        }
     }
 
-    function twig_checked_filter($foo) {
-        if ($foo)
+    public function twig_checked_filter($foo)
+    {
+        if ($foo) {
             return ' checked="checked"';
+        }
     }
 
-    function twig_option_selected_filter($foo) {
+    public function twig_option_selected_filter($foo)
+    {
         $try = func_get_args();
         array_shift($try);
 
-        if (in_array($foo, $try))
+        if (in_array($foo, $try)) {
             return ' selected="selected"';
+        }
     }
 
-    function twig_show_gravatar_filter($email, $size, $img, $attr = array()) {
+    public function twig_show_gravatar_filter($email, $size = 80, $img = false, $attr = array())
+    {
         return get_gravatar($email, $size, 'mm', 'g', $img, $attr);
     }
 
@@ -501,5 +539,4 @@ class Chyrp_Twig_Extension extends Twig_Extension
     //         }
     //         return date('j F Y', $unixtimeStamp);
     // }
-
 }

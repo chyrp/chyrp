@@ -13,8 +13,9 @@ class Chyrp_Url_TokenParser extends Twig_TokenParser
         if ($stream->test("in")) {
             $this->parser->getExpressionParser()->parseExpression();
             $cont = $this->parser->getExpressionParser()->parseExpression();
-        } else
+        } else {
             $cont = null;
+        }
 
         $stream->expect(Twig_Token::BLOCK_END_TYPE);
 
