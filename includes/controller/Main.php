@@ -221,9 +221,8 @@
                                  array("id" => $post),
                                  array("status" => "public"));
 
-            $this->display("pages/index",
-                           array("posts" => new Paginator(Post::find(array("placeholders" => true)),
-                                                          $this->post_limit)));
+            $posts = new Paginator(Post::find(array('placeholders' => true)), $this->post_limit);
+            $this->display('pages/index', array('posts' => $posts, 'body_class' => 'blog'));
         }
 
         /**
@@ -407,7 +406,7 @@
                 Flash::message(_f("This post is only visible by the following groups: %s.", $post->groups()));
 
             $this->display(array("pages/view", "pages/index"),
-                           array("post" => $post, "posts" => array($post)),
+                           array("post" => $post, "posts" => array($post), 'body_class' => 'post'),
                            $post->title());
         }
 
@@ -436,7 +435,8 @@
             if (!$page->public and !$visitor->group->can("view_page"))
                 show_403(__("Access Denied"), __("You do not have sufficient privileges to view this page."));
 
-            $this->display(array("pages/page", "pages/".$page->url), array("page" => $page), $page->title);
+            $this->display(array("pages/page", "pages/".$page->url),
+                array("page" => $page, 'body_class' => 'page'), $page->title);
         }
 
         /**
@@ -710,24 +710,16 @@
          * Grabs a random post and redirects to it.
          */
         public function random() {
-            $sql = SQL::current();
-            if (isset($_GET['feather'])) {
-                $feather = preg_replace( '|[^a-z]|i', '', $_GET['feather'] );
-                $random = $sql->select("posts",
-                                       "posts.url",
+            $param = preg_replace('|[^a-z]|i', '', $_GET['feather']);
+            $feather = isset($param) ? $param : 'text';
+
+            $random = SQL::current()->select("posts",
+                                             "posts.url",
                                        array("posts.feather" => $feather,
                                              "posts.status" => "public"),
                                        array("ORDER BY" => "RAND()"),
                                        array("LIMIT" => 1))->fetchObject();
-                $post = new Post(array("url" => $random->url));
-        	} else {
-                $random = $sql->select("posts",
-                                       "posts.url",
-                                       array("posts.status" => "public"),
-                                       array("ORDER BY" => "RAND()"),
-                                       array("LIMIT" => 1))->fetchObject();
-                $post = new Post(array("url" => $random->url));
-        	}
+            $post = new Post(array("url" => $random->url));
 
             redirect($post->url());
         }
