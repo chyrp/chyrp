@@ -7,7 +7,7 @@ class Chyrp_Url_TokenParser extends Twig_TokenParser
     public function parse(Twig_Token $token)
     {
         $lineno = $token->getLine();
-        $expr = $this->parser->getExpressionParser()->parseExpression();
+        $expr   = $this->parser->getExpressionParser()->parseExpression();
         $stream = $this->parser->getStream();
 
         if ($stream->test("in")) {

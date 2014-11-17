@@ -3,7 +3,7 @@
 /**
  * Represents a node that outputs an expression.
  */
-class Twig_Node_PaginateLoop extends Twig_Node
+class Twig_Node_PaginateLoop extends Twig_Node implements Twig_NodeOutputInterface
 {
     public function __construct(Twig_Node_Expression_AssignName $per_page, Twig_Node_Expression_AssignName $items,
                                 Twig_Node_Expression $target, Twig_Node_Expression_AssignName $mod, Twig_NodeInterface $body,
