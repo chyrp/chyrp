@@ -23,8 +23,11 @@ class Twig_Node_Url extends Twig_Node implements Twig_NodeOutputInterface
             ->subcompile($this->getNode('expr'))
         ;
 
-        if (!empty($this->getAttribute('cont')) and class_exists($this->getAttribute('cont')->name."Controller") and is_callable(array($this->getAttribute('cont')->name."Controller", "current")))
+        if (null !== $this->getAttribute('cont') and
+            class_exists($this->getAttribute('cont')->name."Controller") and
+            is_callable(array($this->getAttribute('cont')->name."Controller", "current"))) {
             $compiler->raw(", ".$this->getAttribute('cont')->name."Controller::current()");
+        }
 
         $compiler->raw(");\n");
     }

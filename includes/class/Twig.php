@@ -58,22 +58,25 @@ class Twig
 
     private function loadExtensions()
     {
-        if ($this->getDebug())
+        if ($this->getDebug()) {
             $this->twig->addExtension(new Twig_Extension_Debug());
+        }
 
         $this->twig->addExtension(new Chyrp_Twig_Extension());
     }
 
     private function getOptions()
     {
-        return array('cache' => $this->getCache(),
-                     'debug' => $this->getDebug(),
-                     'autoescape' => false);
+        return array(
+            'cache' => $this->getCache(),
+            'debug' => $this->getDebug(),
+            'autoescape' => false,
+        );
     }
 
     private function getDebug()
     {
-        return DEBUG ? true : false ;
+        return DEBUG ? true : false;
     }
 
     private function getCache()
@@ -93,8 +96,10 @@ class Twig
      * Function: current
      * Returns a singleton reference to the current configuration.
      */
-    public static function & current() {
+    public static function & current()
+    {
         static $instance = null;
-        return $instance = (empty($instance)) ? new self() : $instance ;
+
+        return $instance = (empty($instance)) ? new self() : $instance;
     }
 }
