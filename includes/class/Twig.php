@@ -43,10 +43,9 @@
 
 
     if (!defined('TWIG_BASE'))
-        define('TWIG_BASE', dirname(__FILE__) . '/Twig');
+        define('TWIG_BASE', __DIR__ . '/Twig');
 
     define('TWIG_VERSION', '0.1-dev');
-
 
     // the systems we load automatically on initialization.  The compiler
     // and other stuff is loaded on first request.

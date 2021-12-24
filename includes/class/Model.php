@@ -253,7 +253,7 @@
                 }
             }
 
-            if (!count($read) or !$read)
+            if (!is_countable($read))
                 return $model->no_results = true;
             else
                 $model->no_results = false;

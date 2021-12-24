@@ -1943,12 +1943,15 @@
                 $info["author"]["link"] = !empty($info["author"]["url"]) ?
                     '<a href="'.$info["author"]["url"].'">'.$info["author"]["name"].'</a>' :
                     $info["author"]["name"] ;
-                $info["description"] = preg_replace("/<code>(.+)<\/code>/se",
-                                                    "'<code>'.fix('\\1').'</code>'",
+                $info["description"] = preg_replace_callback("/<code>(.+)<\/code>/s",
+                                                    function ($matches) {
+                                                        return "'<code>'.fix('\\1').'</code>'";
+                                                    },
                                                     $info["description"]);
-
-                $info["description"] = preg_replace("/<pre>(.+)<\/pre>/se",
-                                                    "'<pre>'.fix('\\1').'</pre>'",
+                $info["description"] = preg_replace_callback("/<pre>(.+)<\/pre>/s",
+                                                    function ($matches) {
+                                                        return "'<pre>'.fix('\\1').'</pre>'";
+                                                    },
                                                     $info["description"]);
 
                 $this->context["admin_themes"][] = array("name" => $folder,
@@ -2518,12 +2521,12 @@
             $this->context["navigation"]["write"] = array("title" => __("Write"),
                                                           "show" => in_array(true, $show["write"]),
                                                           "selected" => (in_array($action, $write) or
-                                                                        match("/^write_/", $action)));
+                                                                        match_it("/^write_/", $action)));
 
             $this->context["navigation"]["manage"] = array("title" => __("Manage"),
                                                            "show" => in_array(true, $show["manage"]),
                                                            "selected" => (in_array($action, $manage) or
-                                                                         match(array("/^manage_/",
+                                                                         match_it(array("/^manage_/",
                                                                                      "/^edit_/",
                                                                                      "/^delete_/",
                                                                                      "/^new_/"), $action)));
@@ -2531,12 +2534,12 @@
             $this->context["navigation"]["settings"] = array("title" => __("Settings"),
                                                              "show" => in_array(true, $show["settings"]),
                                                              "selected" => (in_array($action, $settings) or
-                                                                           match("/_settings$/", $action)));
+                                                                           match_it("/_settings$/", $action)));
 
             $this->context["navigation"]["extend"] = array("title" => __("Extend"),
                                                            "show" => in_array(true, $show["extend"]),
                                                            "selected" => (in_array($action, $extend) or
-                                                                         match(array("/_extend$/",
+                                                                         match_it(array("/_extend$/",
                                                                                      "/_editor$/"), $action)));
 
             $this->subnav_context($route->action);

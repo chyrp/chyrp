@@ -6,12 +6,12 @@
  * implementation (http://spyc.sourceforge.net/), and portions are
  * copyright 2005-2006 Chris Wanstrath.
  *
- * @author   Chris Wanstrath (chris@ozmm.org)
- * @author   Chuck Hagenbuch (chuck@horde.org)
- * @author   Mike Naberezny (mike@maintainable.com)
- * @license  http://opensource.org/licenses/bsd-license.php BSD
+ * @author   Chris Wanstrath <chris@ozmm.org>
+ * @author   Chuck Hagenbuch <chuck@horde.org>
+ * @author   Mike Naberezny <mike@maintainable.com>
+ * @license  http://www.horde.org/licenses/bsd BSD
  * @category Horde
- * @package  Horde_Yaml
+ * @package  Yaml
  */
 
 require "YAML/Dumper.php";
@@ -28,7 +28,7 @@ require "YAML/Node.php";
  * that will be used for parsing.
  *
  * @category Horde
- * @package  Horde_Yaml
+ * @package  Yaml
  */
 class YAML
 {
@@ -40,6 +40,15 @@ class YAML
      * @var callback
      */
     public static $loadfunc = 'syck_load';
+
+    /**
+     * Callback used for alternate YAML dumper, typically exported
+     * by a faster PHP extension.  This function's first argument
+     * must accept a mixed variable to be dumped.
+     *
+     * @var callback
+     */
+    public static $dumpfunc = 'syck_dump';
 
     /**
      * Whitelist of classes that can be instantiated automatically
@@ -67,17 +76,16 @@ class YAML
         }
 
         if (is_callable(self::$loadfunc)) {
-            $array = call_user_func(self::$loadfunc, $yaml);
-            return is_array($array) ? $array : array();
+            return call_user_func(self::$loadfunc, $yaml);
         }
 
         if (strpos($yaml, "\r") !== false) {
             $yaml = str_replace(array("\r\n", "\r"), array("\n", "\n"), $yaml);
         }
-        $lines = explode("\n", $yaml);
+        $lines = explode("\n", rtrim($yaml, "\n"));
         $loader = new Horde_Yaml_Loader;
 
-        while (list(,$line) = each($lines)) {
+        foreach ($lines as $line) {
             $loader->parse($line);
         }
 
@@ -118,13 +126,12 @@ class YAML
      */
     public static function loadStream($stream)
     {
-        if (! is_resource($stream) || get_resource_type($stream) != 'stream') {
+        if (!is_resource($stream) || get_resource_type($stream) != 'stream') {
             throw new InvalidArgumentException('Stream must be a stream resource');
         }
 
         if (is_callable(self::$loadfunc)) {
-            $array = call_user_func(self::$loadfunc, stream_get_contents($stream));
-            return is_array($array) ? $array : array();
+            return call_user_func(self::$loadfunc, stream_get_contents($stream));
         }
 
         $loader = new Horde_Yaml_Loader;
@@ -136,18 +143,23 @@ class YAML
     }
 
     /**
-     * Dump a PHP array to YAML.
+     * Dumps a PHP array to YAML.
      *
-     * The dump method, when supplied with an array, will do its best
-     * to convert the array into friendly YAML.
+     * The dump method, when supplied with an array, will do its best to
+     * convert the array into friendly YAML.
      *
-     * @param  array|Traversable  $array     PHP array or traversable object
-     * @param  integer            $options   Options to pass to dumper
-     * @return string                        YAML representation of $value
+     * @param  array|Traversable $array  PHP array or Traversable object.
+     * @param  array $options            Options to pass to dumper.
+     *
+     * @return string  YAML representation of $value.
      */
     public static function dump($value, $options = array())
     {
-        $dumper = new Horde_Yaml_Dumper;
+        if (is_callable(self::$dumpfunc)) {
+            return call_user_func(self::$dumpfunc, $value);
+        }
+
+        $dumper = new Horde_Yaml_Dumper();
         return $dumper->dump($value, $options);
     }
 

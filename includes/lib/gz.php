@@ -22,7 +22,7 @@
     if (strpos($_GET['file'], "/themes/") === 0) {
         # Constant: MAIN_DIR
         # Absolute path to the Chyrp root
-        define('MAIN_DIR', dirname(dirname(dirname(__FILE__))));
+        define('MAIN_DIR', dirname(__DIR__, 2));
 
         header("Last-Modified: ".@date("r", filemtime(MAIN_DIR.$_GET['file'])));
 

@@ -17,23 +17,7 @@
      * Begins Chyrp's custom session storage whatnots.
      */
     function session() {
-        session_set_save_handler(array("Session", "open"),
-                                 array("Session", "close"),
-                                 array("Session", "read"),
-                                 array("Session", "write"),
-                                 array("Session", "destroy"),
-                                 array("Session", "gc"));
-        $host = $_SERVER['HTTP_HOST'];
-        if (is_numeric(str_replace(".", "", $host)))
-            $domain = $host;
-        elseif (count(explode(".", $host)) >= 2)
-            $domain = preg_replace("/^www\./", ".", $host);
-        else
-            $domain = "";
-
-        session_set_cookie_params(60 * 60 * 24 * 30, "/", $domain);
-        session_name("ChyrpSession");
-        register_shutdown_function("session_write_close");
+        session_set_save_handler(new Session, true);
         session_start();
     }
 
@@ -172,7 +156,7 @@
      *     $v Chyrp version that deprecated the function
      *     $r Optional. The function that should have been called
      */
-    function deprecated($f, $v, $r = null, $trace) {
+    function deprecated($trace, $f, $v, $r = null) {
         if (!logged_in())
             return;
 
@@ -570,7 +554,7 @@
             if (is_array($value))
                 sanitize_input($value);
             else
-                $value = get_magic_quotes_gpc() ? stripslashes($value) : $value ;
+                $value = stripslashes($value);
     }
 
     /**
@@ -1426,7 +1410,7 @@
      * Returns:
      *     Whether or not the match succeeded.
      */
-    function match($try, $haystack) {
+    function match_it($try, $haystack) {
         if (is_string($try))
             return (bool) preg_match($try, $haystack);
 

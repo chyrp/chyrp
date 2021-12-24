@@ -9,13 +9,12 @@
          * Loads the update XML file.
          */
         private static function xml() {
-            $xml = simplexml_load_string(get_remote("http://chyrp.net/update.xml"));
-            return $xml;
+            return simplexml_load_string(get_remote("http://chyrp.net/update.xml"));
         }
 
         /**
          * Function: check_update
-         * Checks if the a new version of Chyrp is available.
+         * Checks if a new version of Chyrp is available.
          */
         public static function check_update() {
             $config = Config::current();

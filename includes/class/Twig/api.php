@@ -47,7 +47,7 @@ class Twig_Template
     public $charset;
     public $loader;
 
-    public function __construct($instance, $charset=NULL, $loader)
+    public function __construct($instance, $loader, $charset = null)
     {
         $this->instance = $instance;
         $this->charset = $charset;
@@ -98,7 +98,7 @@ class Twig_BaseLoader
     public function getTemplate($name)
     {
         $cls = $this->requireTemplate($name);
-        return new Twig_Template(new $cls, $this->charset, $this);
+        return new Twig_Template(new $cls, $this, $this->charset);
     }
 
     public function getCacheFilename($name)

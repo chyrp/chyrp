@@ -21,7 +21,7 @@
         public function __construct($sql, $query, $params = array(), $throw_exceptions = false) {
             if (DEBUG)
                 global $time_start;
-            
+
             $this->sql = $sql;
 
             # Don't count config setting queries.
@@ -41,7 +41,7 @@
                 $target = $trace[$index = 0];
 
                 # Getting a traceback from these files doesn't help much.
-                while (match(array("/SQL\.php/", "/Model\.php/", "/\/model\//"), $target["file"]))
+                while (match_it(array("/SQL\.php/", "/Model\.php/", "/\/model\//"), $target["file"]))
                     if (isset($trace[$index + 1]["file"]))
                         $target = $trace[$index++];
                     else
@@ -133,7 +133,7 @@
                     return $this->query->fetchColumn($column);
                 case "mysqli":
                     $result = $this->query->fetch_array();
-                    return $result[$column];
+                    return isset($result[$column]) ? $result[$column] : [];
                 case "mysql":
                     $result = mysql_fetch_array($this->query);
                     return $result[$column];
