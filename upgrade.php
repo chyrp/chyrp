@@ -22,8 +22,8 @@
     define('INSTALLING',   false);
     define('TESTER',       true);
     define('INDEX',        false);
-    define('MAIN_DIR',     dirname(__FILE__));
-    define('INCLUDES_DIR', dirname(__FILE__)."/includes");
+    define('MAIN_DIR',     __DIR__);
+    define('INCLUDES_DIR', __DIR__ ."/includes");
     define('MODULES_DIR',  MAIN_DIR."/modules");
     define('FEATHERS_DIR', MAIN_DIR."/feathers");
     define('THEMES_DIR',   MAIN_DIR."/themes");
