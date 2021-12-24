@@ -46,12 +46,12 @@ $(function(){
             'scrollTop': $target.offset().top
         }, 1000, 'swing');
     })
-    $(".comment_edit_link").live("click", function() {
+    $(".comment_edit_link").on("click", function() {
         var id = $(this).attr("id").replace(/comment_edit_/, "")
         Comment.edit(id)
         return false
     })
-    $(".comment_delete_link").live("click", function() {
+    $(".comment_delete_link").on("click", function() {
         var id = $(this).attr("id").replace(/comment_delete_/, "")
 
         notice++

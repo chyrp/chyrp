@@ -673,11 +673,11 @@
 
                 scanTags()
 
-                $("#tags").live("keyup", scanTags)
+                $("#tags").on("keyup", scanTags)
 
-                $(".tag_cloud > span").live("mouseover", function(){
+                $(".tag_cloud > span").on("mouseover", function(){
                     $(this).find(".controls").css("opacity", 1)
-                }).live("mouseout", function(){
+                }).on("mouseout", function(){
                     $(this).find(".controls").css("opacity", 0)
                 })
 

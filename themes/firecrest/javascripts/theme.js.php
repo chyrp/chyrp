@@ -47,7 +47,7 @@ $(function(){
         })
     }
 
-    $("input#slug").live("keyup", function(e){
+    $("input#slug").on("keyup", function(e){
         if (/^([a-zA-Z0-9\-\._:]*)$/.test($(this).val()))
             $(this).css("background", "")
         else
