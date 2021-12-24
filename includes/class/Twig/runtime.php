@@ -455,7 +455,7 @@ function twig_quotes_filter($string) {
 function twig_length_filter($thing) {
     if (is_string($thing))
         return strlen($thing);
-    else
+    elseif (is_array($thing))
         return count($thing);
 }
 
