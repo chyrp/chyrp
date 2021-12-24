@@ -10,7 +10,7 @@
     define('UPGRADING',    false);
     define('INSTALLING',   true);
     define('TESTER',       isset($_SERVER['HTTP_USER_AGENT']) and $_SERVER['HTTP_USER_AGENT'] == "tester.rb");
-    define('MAIN_DIR',     dirname(__FILE__));
+    define('MAIN_DIR',     __DIR__);
     define('INCLUDES_DIR', MAIN_DIR."/includes");
     define('USE_ZLIB',     false);
 
@@ -20,7 +20,7 @@
 
     ob_start();
 
-    if (version_compare(PHP_VERSION, "5.3.0", "<"))
+    if (version_compare(PHP_VERSION, "5.4.0", "<"))
         exit("Chyrp requires PHP 5.3.0 or greater. Installation cannot continue.");
 
     require_once INCLUDES_DIR."/helpers.php";
@@ -538,8 +538,8 @@
         </script>
     </head>
     <body>
-        <?php foreach ($errors as $error): ?>
-        <div class="error<?php if ($index + 1 == count($errors)) echo " last"; ?>"><?php echo $error; ?></div>
+        <?php foreach ($errors as $index => $error): ?>
+        <div class="error<?php if ($index + 1 === count($errors)) echo " last"; ?>"><?php echo $error; ?></div>
         <?php endforeach; ?>
         <div class="window">
         <?php if (!$installed): ?>
@@ -637,7 +637,7 @@
         <?php else: ?>
             <h1><?php echo __("Done!"); ?></h1>
             <p>
-                <?php echo __("Chyrp has been successfully installed and you have been logged in."); ?>
+                <?php echo __("Chyrp has been successfully installed."); ?>
             </p>
             <h2><?php echo __("So, what now?"); ?></h2>
             <ol>

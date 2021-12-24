@@ -663,8 +663,9 @@
                     if (!isset($this->$varname))
                         $this->$varname = @$this->$filter["field"];
 
-                    if (isset($this->$filter["field"]) and !empty($this->$filter["field"]))
-                        $trigger->filter($this->$filter["field"], $filter["name"], $this);
+                    if (isset($this->{$filter["field"]}) and !empty($this->{$filter["field"]})) {
+                        $trigger->filter($this->{$filter["field"]}, $filter["name"], $this);
+                    }
                 }
         }
 
@@ -790,7 +791,7 @@
          * !! DEPRECATED AFTER 2.0 !!
          */
         public function user() {
-            deprecated("\$post.user", "2.0", "\$post.author", debug_backtrace());
+            deprecated(debug_backtrace(), "\$post.user", "2.0", "\$post.author");
             return self::author();
         }
 

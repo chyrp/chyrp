@@ -198,7 +198,7 @@
 
             if (preg_match("/^$url_regex/", ltrim($request, "/"), $matches)) {
                 $post_url_attrs = array();
-                for ($i = 0; $i < count($url_parameters); $i++)
+                for ($i = 0, $max = count($url_parameters); $i < $max; $i++)
                     $post_url_attrs[$url_parameters[$i]] = urldecode($matches[$i + 1]);
 
                 if ($return_post)
@@ -809,7 +809,7 @@
          */
         public function display($file, $context = array(), $title = "") {
             if (is_array($file))
-                for ($i = 0; $i < count($file); $i++) {
+                for ($i = 0, $max = count($file); $i < $max; $i++) {
                     $check = ($file[$i][0] == "/" or preg_match("/[a-zA-Z]:\\\/", $file[$i])) ?
                                  $file[$i] :
                                  THEME_DIR."/".$file[$i] ;
@@ -867,7 +867,7 @@
             foreach ($config->enabled_modules as $module)
                 $this->context["enabled_modules"][$module] = true;
 
-            $context["enabled_feathers"] = array();
+            $this->context["enabled_feathers"] = array();
             foreach ($config->enabled_feathers as $feather)
                 $this->context["enabled_feathers"][$feather] = true;
 
