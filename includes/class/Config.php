@@ -1,5 +1,5 @@
 <?php
-    if (!defined("INCLUDES_DIR")) define("INCLUDES_DIR", __FILE__);
+    if (!defined("INCLUDES_DIR")) define("INCLUDES_DIR", __DIR__);
 
     /**
      * Class: Config
