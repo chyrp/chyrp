@@ -41,6 +41,8 @@ define( 'MARKDOWNEXTRA_VERSION',  "1.2.8" ); # 29 Nov 2013
 # setting this to true will put attributes on the `pre` tag instead.
 @define( 'MARKDOWN_CODE_ATTR_ON_PRE',   false );
 
+# Optional class prefix for code span
+@define( 'MARKDOWN_CODE_SPAN_PREFIX',		"" );
 
 #
 # WordPress settings:
@@ -559,6 +561,17 @@ class Markdown_Parser {
 		# Swap back any tag hash found in $text so we do not have to `unhash`
 		# multiple times at the end.
 		$text = $this->unhash($text);
+		
+		# Find the correct tag to replace
+		$tag = "code";
+		if (MARKDOWN_CODE_ATTR_ON_PRE == true) {
+			$tag = "pre";
+		}
+		
+		# Replace the tag with the prefix if the prefix has been set
+		if (!empty(MARKDOWN_CODE_CLASS_PREFIX)) {
+			$text = str_replace("<". $tag . ">","<" . $tag . " class='".MARKDOWN_CODE_CLASS_PREFIX."'>",$text);
+		}
 		
 		# Then hash the block.
 		static $i = 0;
@@ -1151,7 +1164,13 @@ class Markdown_Parser {
 	# Create a code span markup for $code. Called from handleSpanToken.
 	#
 		$code = htmlspecialchars(trim($code), ENT_NOQUOTES);
-		return $this->hashPart("<code>$code</code>");
+		
+		# Check if a code span prefix has been set
+		if (!empty(MARKDOWN_CODE_SPAN_PREFIX))
+			return $this->hashPart("<code>$code</code>");
+			
+		# Return the code span including the prefix
+		return $this->hashPart("<code class='" . MARKDOWN_CODE_SPAN_PREFIX . "'>$code</code>");
 	}
 
 
