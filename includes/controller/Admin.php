@@ -3,6 +3,7 @@
      * Class: Admin Controller
      * The logic behind the Admin area.
      */
+    #[\AllowDynamicProperties]
     class AdminController {
         # Boolean: $displayed
         # Has anything been displayed?
@@ -2588,6 +2589,7 @@
          */
         public static function & current() {
             static $instance = null;
-            return $instance = (empty($instance)) ? new self() : $instance ;
+            $instance = (empty($instance)) ? new self() : $instance ;
+            return $instance;
         }
     }

@@ -3,6 +3,7 @@
      * Class: Paginator
      * Paginates over an array.
      */
+    #[\AllowDynamicProperties]
     class Paginator {
         # Array: $array
         # The original, unmodified data.

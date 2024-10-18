@@ -101,20 +101,25 @@ class Twig_LoopContextIterator implements Iterator
         $this->parent = $parent;
     }
 
+    #[\ReturnTypeWillChange]
     public function rewind() {}
 
+    #[\ReturnTypeWillChange]
     public function key() {}
 
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         return $this->idx < $this->length;
     }
 
+    #[\ReturnTypeWillChange]
     public function next()
     {
         $this->idx++;
     }
 
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return $this;

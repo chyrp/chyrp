@@ -5,6 +5,7 @@
      * Class: Config
      * Holds all of the configuration variables for the entire site, as well as Module settings.
      */
+    #[\AllowDynamicProperties]
     class Config {
         # Variable: $yaml
         # Holds all of the YAML settings as a $key => $val array.

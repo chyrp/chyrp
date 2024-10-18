@@ -3,6 +3,7 @@
      * Class: Route
      * Holds information for URLs, redirecting, etc.
      */
+    #[\AllowDynamicProperties]
     class Route {
         # String: $action
         # The current action.
@@ -233,4 +234,3 @@
             return $instance;
         }
     }
-

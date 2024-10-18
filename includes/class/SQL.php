@@ -14,6 +14,7 @@
     #     <QueryBuilder>
     require_once INCLUDES_DIR."/class/QueryBuilder.php";
 
+    #[\AllowDynamicProperties]
     class SQL {
         # Array: $debug
         # Holds debug information for SQL queries.

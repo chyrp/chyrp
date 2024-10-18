@@ -3,6 +3,7 @@
      * Class: QueryBuilder
      * A generic SQL query builder.
      */
+    #[\AllowDynamicProperties]
     class QueryBuilder {
         /**
          * Function: build_select
@@ -443,5 +444,3 @@
             $field = preg_replace("/AS ([^ ]+)\./i", "AS ", $field);
         }
     }
-
-

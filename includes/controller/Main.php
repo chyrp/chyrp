@@ -3,6 +3,7 @@
      * Class: Main Controller
      * The logic behind the Chyrp install.
      */
+    #[\AllowDynamicProperties]
     class MainController {
         # Array: $urls
         # An array of clean URL => dirty URL translations.

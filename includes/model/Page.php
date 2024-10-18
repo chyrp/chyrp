@@ -6,6 +6,7 @@
      * See Also:
      *     <Model>
      */
+    #[\AllowDynamicProperties]
     class Page extends Model {
         public $belongs_to = array("user", "parent" => array("model" => "page"));
 

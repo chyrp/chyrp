@@ -3,6 +3,7 @@
      * Class: Query
      * Handles a query based on the <SQL.method>.
      */
+    #[\AllowDynamicProperties]
     class Query {
         # Variable: $query
         # Holds the current query.

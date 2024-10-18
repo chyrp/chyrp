@@ -3,6 +3,7 @@
      * Class: Theme
      * Various helper functions for the theming engine.
      */
+    #[\AllowDynamicProperties]
     class Theme {
         # String: $title
         # The title for the current page.
