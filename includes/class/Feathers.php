@@ -3,7 +3,6 @@
      * Class: Feathers
      * Contains various functions, acts as the backbone for all feathers.
      */
-    #[\AllowDynamicProperties]
     class Feathers {
         # Array: $instances
         # Holds all Feather instantiations.

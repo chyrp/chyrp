@@ -3,7 +3,6 @@
      * Class: Admin Controller
      * The logic behind the Admin area.
      */
-    #[\AllowDynamicProperties]
     class AdminController {
         # Boolean: $displayed
         # Has anything been displayed?

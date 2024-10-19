@@ -3,7 +3,6 @@
      * Class: Flash
      * Stores messages (notice, warning, message) to display to the user after a redirect.
      */
-    #[\AllowDynamicProperties]
     class Flash {
         # Array: $notices
         # Manages notices.

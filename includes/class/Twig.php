@@ -41,7 +41,6 @@
      * :license: BSD.
      */
 
-
     if (!defined('TWIG_BASE'))
         define('TWIG_BASE', __DIR__ . '/Twig');
 

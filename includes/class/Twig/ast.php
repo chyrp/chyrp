@@ -364,6 +364,7 @@ class Twig_Include extends Twig_Node
 class Twig_URL extends Twig_Node
 {
     public $expr;
+    public $cont;
 
     public function __construct($expr, $cont, $lineno)
     {
@@ -663,6 +664,7 @@ class Twig_GetAttrExpression extends Twig_Expression
 {
     public $node;
     public $attr;
+    public $token_value;
 
     public function __construct($node, $attr, $lineno, $token_value)
     {

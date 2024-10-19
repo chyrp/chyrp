@@ -3,7 +3,6 @@
      * Class: Model
      * The basis for the Models system.
      */
-    #[\AllowDynamicProperties]
     class Model {
         # Array: $caches
         # Caches every loaded module into a clone of the object.

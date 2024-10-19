@@ -3,7 +3,6 @@
      * Class: Query
      * Handles a query based on the <SQL.method>.
      */
-    #[\AllowDynamicProperties]
     class Query {
         # Variable: $query
         # Holds the current query.
@@ -100,24 +99,6 @@
                         return $this->handle($error);
                     }
                     break;
-                case "mysql":
-                    foreach ($params as $name => $val)
-                        $query = preg_replace("/{$name}([^a-zA-Z0-9_]|$)/",
-                                              str_replace(array("\\", "\$"),
-                                                          array("\\\\", "\\\$"),
-                                                          $this->sql->escape($val))."\\1",
-                                              $query);
-
-                    $this->queryString = $query;
-
-                    try {
-                        if (!$this->query = @mysql_query($query))
-                            throw new Exception(mysql_error());
-                    } catch (Exception $error) {
-                        return $this->handle($error);
-                    }
-
-                    break;
             }
         }
 
@@ -134,10 +115,7 @@
                     return $this->query->fetchColumn($column);
                 case "mysqli":
                     $result = $this->query->fetch_array();
-                    return isset($result[$column]) ? $result[$column] : [];
-                case "mysql":
-                    $result = mysql_fetch_array($this->query);
-                    return $result[$column];
+                    return $result[$column] ?? [];
             }
         }
 
@@ -151,8 +129,6 @@
                     return $this->query->fetch();
                 case "mysqli":
                     return $this->query->fetch_array();
-                case "mysql":
-                    return mysql_fetch_array($this->query);
             }
         }
 
@@ -166,8 +142,6 @@
                     return $this->query->fetchObject();
                 case "mysqli":
                     return $this->query->fetch_object();
-                case "mysql":
-                    return mysql_fetch_object($this->query);
             }
         }
 
@@ -186,25 +160,18 @@
                         $results[] = $row;
 
                     return $results;
-                case "mysql":
-                    $results = array();
-
-                    while ($row = mysql_fetch_assoc($this->query))
-                        $results[] = $row;
-
-                    return $results;
             }
         }
 
         /**
          * Function: grab
-         * Grabs all of the given column out of the full result of a query.
+         * Grabs all the given column out of the full result of a query.
          *
          * Parameters:
          *     $column - Name of the column to grab.
          *
          * Returns:
-         *     An array of all of the values of that column in the result.
+         *     An array of all the values of that column in the result.
          */
          public function grab($column) {
             $all = $this->fetchAll();

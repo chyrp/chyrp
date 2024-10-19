@@ -24,7 +24,7 @@
          * Function: open
          * Returns: @true@
          */
-        public function open($path, $name): true {
+        public function open($path, $name) {
             return true;
         }
 
@@ -32,7 +32,7 @@
          * Function: close
          * Returns: @true@
          */
-        public function close(): true {
+        public function close() {
             return true;
         }
 
@@ -43,7 +43,6 @@
          * Parameters:
          *     $id - Session ID.
          */
-        #[\ReturnTypeWillChange]
         public function read($id) {
             self::$data = SQL::current()->select("sessions",
                                                  "data",
@@ -94,7 +93,7 @@
          * Parameters:
          *     $id - Session ID.
          */
-        public function destroy($id): bool {
+        public function destroy($id) {
             if (SQL::current()->delete("sessions", array("id" => $id)))
                 return true;
 
@@ -105,7 +104,7 @@
          * Function: gc
          * Garbage collector. Removes sessions older than 30 days and sessions with no stored data.
          */
-        public function gc($max_lifetime): bool {
+        public function gc($max_lifetime) {
             SQL::current()->delete("sessions",
                                    "created_at <= :thirty_days OR data = '' OR data IS NULL",
                                    array(":thirty_days" => datetime(strtotime("-30 days"))));

@@ -1,7 +1,7 @@
 name: chyrp
 type: php
 docroot: ""
-php_version: "8.3"
+php_version: "7.4"
 webserver_type: nginx-fpm
 xdebug_enabled: false
 additional_hostnames: []

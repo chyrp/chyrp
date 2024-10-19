@@ -3,7 +3,6 @@
      * Class: Trigger
      * Controls and keeps track of all of the Triggers and events.
      */
-    #[\AllowDynamicProperties]
     class Trigger {
         # Array: $priorities
         # Custom prioritized callbacks.

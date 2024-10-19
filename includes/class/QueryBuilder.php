@@ -3,7 +3,6 @@
      * Class: QueryBuilder
      * A generic SQL query builder.
      */
-    #[\AllowDynamicProperties]
     class QueryBuilder {
         /**
          * Function: build_select

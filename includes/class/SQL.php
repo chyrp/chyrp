@@ -13,8 +13,7 @@
     # See Also:
     #     <QueryBuilder>
     require_once INCLUDES_DIR."/class/QueryBuilder.php";
-
-    #[\AllowDynamicProperties]
+    
     class SQL {
         # Array: $debug
         # Holds debug information for SQL queries.
@@ -68,8 +67,6 @@
             if (isset($this->adapter)) {
                 if ($this->adapter == "mysql" and class_exists("MySQLi"))
                     $this->method = "mysqli";
-                elseif ($this->adapter == "mysql" and function_exists("mysql_connect"))
-                    $this->method = "mysql";
                 elseif (class_exists("PDO") and
                         ($this->adapter == "sqlite" and in_array("sqlite", PDO::getAvailableDrivers()) or
                          $this->adapter == "pgsql" and in_array("pgsql", PDO::getAvailableDrivers())))
@@ -77,8 +74,6 @@
             } else
                 if (class_exists("MySQLi"))
                     $this->method = "mysqli";
-                elseif (function_exists("mysql_connect"))
-                    $this->method = "mysql";
                 elseif (class_exists("PDO") and in_array("mysql", PDO::getAvailableDrivers()))
                     $this->method = "pdo";
         }
@@ -158,14 +153,6 @@
                         return ($checking) ? false : error(__("Database Error"), $this->error) ;
 
                     break;
-                case "mysql":
-                    $this->db = @mysql_connect($this->host, $this->username, $this->password);
-                    $this->error = mysql_error();
-
-                    if (!$this->db or !@mysql_select_db($this->database))
-                        return ($checking) ? false : error(__("Database Error"), $this->error) ;
-
-                    break;
             }
 
             if ($this->adapter == "mysql")
@@ -194,7 +181,7 @@
                 if (!strpos($query, $name))
                     unset($params[$name]);
 
-            $query = str_replace("__", $this->prefix, $query);
+            $query = str_replace("__", $this->prefix ?? '', $query);
 
             if ($this->adapter == "sqlite")
                 $query = str_ireplace(" DEFAULT CHARSET=utf8", "", str_ireplace("AUTO_INCREMENT", "AUTOINCREMENT", $query));
@@ -345,9 +332,6 @@
                 case "mysqli":
                     return $this->db->insert_id;
                     break;
-                case "mysql":
-                    return @mysql_insert_id();
-                    break;
             }
         }
 
@@ -371,9 +355,6 @@
                     break;
                 case "mysqli":
                     $string = $this->db->escape_string($string);
-                    break;
-                case "mysql":
-                    $string = mysql_real_escape_string($string);
                     break;
             }
 
