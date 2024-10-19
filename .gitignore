@@ -5,10 +5,9 @@ includes/database.yaml.php
 themes/*
 !themes/firecrest
 
-/chyrp.esproj
-/chyrp.tmproj
-/.idea/
-
 *.idraw
 *.db
 *.DS_Store
+
+.idea/
+.vscode/

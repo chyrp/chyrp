@@ -9,7 +9,7 @@
          * Loads the update XML file.
          */
         private static function xml() {
-            return simplexml_load_string(get_remote("http://chyrp.net/update.xml"));
+            return @simplexml_load_string(get_remote("https://chyrp.net/update.xml"));
         }
 
         /**
@@ -18,15 +18,16 @@
          */
         public static function check_update() {
             $config = Config::current();
+            $curver = CHYRP_VERSION;
 
             if (!$config->check_updates)
                 return;
 
+            if (!$xml = self::xml())
+                return;
+
             if ((time() - $config->check_updates_last) < 86400 )
                 return; # Check for updates once per day
-
-            $xml = self::xml();
-            $curver = CHYRP_VERSION;
 
             foreach ($xml->channel->item as $item) {
                 $newver = $item->version;

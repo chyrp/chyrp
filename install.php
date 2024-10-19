@@ -21,7 +21,7 @@
     ob_start();
 
     if (version_compare(PHP_VERSION, "5.4.0", "<"))
-        exit("Chyrp requires PHP 5.3.0 or greater. Installation cannot continue.");
+        exit("Chyrp requires PHP 5.4.0 or greater. Installation cannot continue.");
 
     require_once INCLUDES_DIR."/helpers.php";
 
@@ -615,7 +615,7 @@
                 <h1><?php echo __("Admin Account"); ?></h1>
                 <p id="login_field">
                     <label for="login"><?php echo __("Username"); ?></label>
-                    <input type="text" name="login" value="<?php value_fallback("login", "Admin"); ?>" id="login" />
+                    <input type="text" name="login" value="<?php value_fallback("login", "admin"); ?>" id="login" />
                 </p>
                 <p id="password_1_field">
                     <label for="password_1"><?php echo __("Password"); ?></label>
