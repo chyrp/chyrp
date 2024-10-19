@@ -141,7 +141,7 @@
             $config->set("cookies_notification", true);
             $config->set("check_updates", true);
             $config->set("check_updates_last", 0);
-            $config->set("theme", "firecrest");
+            $config->set("theme", "stardust");
             $config->set("admin_theme", "default");
             $config->set("posts_per_page", 5);
             $config->set("feed_items", 20);

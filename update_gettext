@@ -27,7 +27,7 @@ ruby gettext.rb ./modules/tags/         --domain=tags         > ./modules/tags/l
 ruby gettext.rb ./modules/textilize/    --domain=textilize    > ./modules/textilize/locale/en_US.pot
 ruby gettext.rb ./modules/theme_editor/ --domain=theme_editor > ./modules/theme_editor/locale/en_US.pot
 
-ruby gettext.rb ./themes/firecrest/ --domain=theme > ./themes/firecrest/locale/en_US.pot
+ruby gettext.rb ./themes/stardust/ --domain=theme > ./themes/stardust/locale/en_US.pot
 
 # msgfmt -v ./includes/locale/en_US.pot         -o ./includes/locale/en_US.mo
 #
@@ -57,4 +57,4 @@ ruby gettext.rb ./themes/firecrest/ --domain=theme > ./themes/firecrest/locale/e
 # msgfmt -v ./modules/textilize/locale/en_US.pot      -o ./modules/textilize/locale/en_US.mo
 # msgfmt -v ./modules/theme_editor/locale/en_US.pot   -o ./modules/theme_editor/locale/en_US.mo
 #
-# msgfmt -v ./themes/firecrest/locale/en_US.pot  -o ./themes/firecrest/locale/en_US.mo
+# msgfmt -v ./themes/stardust/locale/en_US.pot  -o ./themes/stardust/locale/en_US.mo

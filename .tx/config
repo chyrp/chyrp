@@ -128,8 +128,8 @@ source_lang = en_US
 type = PO
 
 [chyrp.themes_firecrest]
-file_filter = themes/firecrest/locale/<lang>.po
-source_file = themes/firecrest/locale/en_US.pot
+file_filter = themes/stardust/locale/<lang>.po
+source_file = themes/stardust/locale/en_US.pot
 source_lang = en_US
 type = PO
 
@@ -144,4 +144,3 @@ file_filter = global/locale/<lang>.po
 source_file = global/locale/en_US.pot
 source_lang = en_US
 type = PO
-
