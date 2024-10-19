@@ -3,7 +3,7 @@ feathers/photo/lib/cache/*
 includes/config.yaml.php
 includes/database.yaml.php
 themes/*
-!themes/firecrest
+!themes/stardust
 
 *.idraw
 *.db
